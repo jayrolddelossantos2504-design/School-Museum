@@ -25,3 +25,4 @@ qrcode[pil]==8.2
 
 # Production WSGI server
 waitress==3.0.2
+gunicorn==23.0.0

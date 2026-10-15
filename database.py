@@ -9,6 +9,7 @@ from contextlib import contextmanager
 import os
 
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 
 def get_connection(app):
@@ -37,9 +38,17 @@ def get_cursor(app, dictionary=False, commit=False):
 
     On any exception the transaction is rolled back before re-raising, so
     callers never leave a half-written change behind.
+    
+    For PostgreSQL:
+    - dictionary=True uses RealDictCursor (returns rows as dicts)
+    - dictionary=False uses regular cursor (returns rows as tuples)
     """
     connection = get_connection(app)
-    cursor = connection.cursor(dictionary=dictionary)
+    
+    # Use RealDictCursor for dictionary mode (PostgreSQL)
+    cursor_factory = RealDictCursor if dictionary else None
+    cursor = connection.cursor(cursor_factory=cursor_factory)
+    
     try:
         yield cursor
         if commit:

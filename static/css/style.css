@@ -1,0 +1,54 @@
+/* School Museum - Tailwind CSS Styles */
+/* This file now supports only necessary utilities not covered by Tailwind */
+
+:root {
+  --gtnhs-green-dark: #0a2920;
+  --gtnhs-green: #114232;
+  --gtnhs-green-light: #185a45;
+  --gtnhs-gold: #c68a1a;
+  --gtnhs-gold-light: #e5a93c;
+  --gtnhs-parchment: #faf8f5;
+}
+
+/* Base resets - minimal to avoid conflicts with Tailwind */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Smooth transitions for interactive elements */
+a, button {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+/* Print styles */
+@media print {
+  header, footer, nav, .no-print, button, form {
+    display: none !important;
+  }
+  body {
+    background: white;
+    color: black;
+  }
+}

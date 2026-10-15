@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}QR Code — {{ item.Item_Name }}{% endblock %}
+
+{% block content %}
+{% with admin_title="QR Label Generator" %}{% include "_admin_header.html" %}{% endwith %}
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8 no-print">
+    <div>
+      <h1 class="text-3xl font-serif font-bold text-stone-900 mb-1">{{ item.Item_Name }}</h1>
+      <p class="text-sm text-stone-600">Permanent QR that points to the public exhibit record</p>
+    </div>
+    <a href="{{ url_for('admin.item_detail', item_id=item.ItemID) }}"
+       class="inline-flex items-center gap-2 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-900 font-medium rounded-lg transition-colors whitespace-nowrap">
+      {{ icons.icon('arrow-left', 'w-4 h-4') }}
+      <span>Back to Item</span>
+    </a>
+  </div>
+
+  <!-- Warning if not printable -->
+  {% if not printable %}
+  <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-8 no-print">
+    <p class="text-sm text-red-900">
+      <strong>Do not print this label for long-term use yet.</strong><br>
+      The public URL (<code>{{ public_url }}</code>) is not a stable HTTPS address. Set <code>SITE_URL</code> in your environment before generating physical labels.
+    </p>
+  </div>
+  {% endif %}
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Controls Section -->
+    <div class="lg:col-span-1 no-print">
+      <div class="bg-white rounded-lg border border-stone-200 shadow-sm p-6 sticky top-24">
+        <h2 class="text-lg font-semibold text-stone-900 mb-4">Label Info</h2>
+        
+        <p class="text-sm text-stone-600 mb-6 leading-relaxed">
+          This QR code will continue to work if the item text, images, or category change — the token never changes.
+        </p>
+
+        <!-- Details -->
+        <div class="space-y-4 mb-6 pb-6 border-b border-stone-200">
+          <div>
+            <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-1">Item Name</h3>
+            <p class="text-sm font-medium text-stone-900">{{ item.Item_Name }}</p>
+          </div>
+          <div>
+            <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-1">Public URL</h3>
+            <a href="{{ public_url }}" target="_blank" rel="noopener" class="text-sm text-[#185a45] hover:underline break-all">
+              {{ public_url }}
+            </a>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="space-y-2">
+          <a href="{{ url_for('admin.item_qr_png', item_id=item.ItemID, download=1) }}"
+             class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-[#185a45] hover:bg-[#114232] text-white font-semibold rounded-lg transition-colors">
+            {{ icons.icon('download', 'w-4 h-4') }}
+            <span>Download PNG</span>
+          </a>
+          <button type="button" class="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-900 font-medium rounded-lg transition-colors" onclick="window.print()">
+            {{ icons.icon('printer', 'w-4 h-4') }}
+            <span>Print Label</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Label Preview -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-lg border border-stone-200 shadow-sm p-8 sm:p-12" id="qr-label">
+        <!-- Printable Label Design -->
+        <div class="max-w-md mx-auto text-center">
+          <!-- Header -->
+          <div class="mb-8 pb-6 border-b-2 border-[#114232]">
+            <p class="text-xs font-institutional tracking-widest uppercase text-[#114232] font-bold mb-1">
+              GTNHS Heritage Museum
+            </p>
+            <h1 class="text-2xl font-serif font-bold text-stone-900 leading-tight">
+              {{ item.Item_Name }}
+            </h1>
+            {% if item.Category_Name %}
+            <p class="text-sm font-medium text-[#185a45] mt-3">
+              {{ item.Category_Name }}
+            </p>
+            {% endif %}
+          </div>
+
+          <!-- QR Code -->
+          <div class="my-8 flex justify-center">
+            <div class="bg-white p-6 border-2 border-stone-200 rounded-lg">
+              <img class="w-40 h-40" src="{{ url_for('admin.item_qr_png', item_id=item.ItemID) }}"
+                   alt="QR code linking to {{ item.Item_Name }}">
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="space-y-2">
+            <p class="text-sm font-semibold text-stone-900">
+              Scan to view this exhibit online
+            </p>
+            <p class="text-xs font-mono text-stone-600 break-all">
+              {{ public_url }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Print Instructions -->
+      <div class="mt-4 text-sm text-stone-600 no-print text-center">
+        <p>Use your browser's print dialog to generate a PDF or print directly to a label printer.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style media="print">
+  body {
+    background: white;
+  }
+  .no-print {
+    display: none !important;
+  }
+  #qr-label {
+    box-shadow: none;
+    border: none;
+    page-break-inside: avoid;
+  }
+</style>
+{% endblock %}

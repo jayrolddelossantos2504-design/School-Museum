@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}{{ title }} — GTNHS Heritage Museum Console{% endblock %}
+
+{% block content %}
+{% with admin_title=title %}{% include "_admin_header.html" %}{% endwith %}
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+  <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-dashed border-blue-300 rounded-lg p-12 text-center">
+    <div class="inline-block mb-4">
+      {{ icons.icon('construction', 'w-16 h-16 text-blue-500') }}
+    </div>
+    <h2 class="text-2xl font-serif font-bold text-blue-900 mb-2">Coming Soon</h2>
+    <p class="text-base text-blue-800 mb-4">
+      <strong>{{ title }}</strong> is not implemented yet.
+    </p>
+    <p class="text-sm text-blue-700 mb-8">
+      This section will be built in {{ milestone }}.
+    </p>
+    <a href="{{ url_for('admin.dashboard') }}"
+       class="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+      {{ icons.icon('arrow-left', 'w-4 h-4') }}
+      <span>Back to Dashboard</span>
+    </a>
+  </div>
+</div>
+{% endblock %}

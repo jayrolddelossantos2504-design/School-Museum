@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}Visitor Guide — General Tinio NHS Heritage Museum{% endblock %}
+
+{% block content %}
+<section id="visitor-guide" class="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+  <!-- Title -->
+  <div class="text-center max-w-3xl mx-auto">
+    <p class="text-xs font-sans uppercase tracking-widest text-[#185a45] font-semibold mb-2">
+      Visitor & Educational Guide
+    </p>
+    <h1 class="text-3xl sm:text-4xl font-serif font-bold text-[#0c3125]">
+      Planning Your Visit to the Museum
+    </h1>
+    <div class="w-16 h-0.5 bg-amber-500 mx-auto mt-4 mb-4"></div>
+    <p class="text-stone-600 text-sm sm:text-base leading-relaxed">
+      Open to students, alumni, historical researchers, and visiting educators from across the Philippines.
+    </p>
+  </div>
+
+  <!-- Practical Info Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-lg border-t-4 border-[#185a45] border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-[#185a45]">
+        {{ icons.icon('clock', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Visiting Hours</span>
+      </div>
+      <h3 class="font-serif text-xl font-bold text-stone-900">Open Monday to Friday</h3>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        08:00 – 16:00. The gallery follows the official school calendar and is closed on weekends and public holidays.
+      </p>
+      <div class="pt-2 flex items-center gap-1.5 text-xs text-[#185a45] font-medium">
+        {{ icons.icon('check', 'w-3.5 h-3.5') }}
+        <span>Last entry 15:30</span>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border-t-4 border-amber-500 border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-amber-600">
+        {{ icons.icon('ticket', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Admission</span>
+      </div>
+      <h3 class="font-serif text-xl font-bold text-stone-900">Free for Everyone</h3>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        Learners, staff, alumni, and guests are welcome at no cost. Group visits and guided tours can be arranged.
+      </p>
+      <div class="pt-2 flex items-center gap-1.5 text-xs text-amber-700 font-medium">
+        {{ icons.icon('users', 'w-3.5 h-3.5') }}
+        <span>Group tours by request</span>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border-t-4 border-[#185a45] border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-[#185a45]">
+        {{ icons.icon('pin', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Location</span>
+      </div>
+      <h3 class="font-serif text-xl font-bold text-stone-900">Heritage Hall, Main Campus</h3>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        General Tinio National High School, General Tinio, Nueva Ecija. Ground floor, beside the main administration building.
+      </p>
+      <div class="pt-2">
+        <a href="https://www.google.com/maps/search/General+Tinio+National+High+School+Nueva+Ecija"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1.5 text-xs text-[#185a45] hover:text-amber-600 font-medium">
+          {{ icons.icon('compass', 'w-3.5 h-3.5') }}
+          <span>Open in Maps</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Guide -->
+  <div id="scan" class="bg-[#f4efe6] rounded-xl p-6 sm:p-8 border border-[#e2dacf] space-y-6">
+    <div class="max-w-xl">
+      <p class="text-xs uppercase tracking-wider font-semibold text-[#185a45] font-mono">
+        Smart Museum System
+      </p>
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-[#0c3125]">
+        How to Use QR Codes on Physical Exhibits
+      </h2>
+      <p class="text-stone-600 text-xs sm:text-sm mt-1">
+        Every physical display cabinet on campus has an engraved or printed placard with a permanent QR code.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-5 rounded-lg border border-[#e2dacf] space-y-2">
+        <div class="w-8 h-8 rounded-full bg-[#eef4f0] text-[#114232] font-mono font-bold flex items-center justify-center text-xs">
+          01
+        </div>
+        <h4 class="font-serif font-bold text-base text-stone-900">Locate the Stand Placard</h4>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Find the bronze or acrylic card mounted on the front corner of the physical display cabinet or shadowbox.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-lg border border-[#e2dacf] space-y-2">
+        <div class="w-8 h-8 rounded-full bg-[#eef4f0] text-[#114232] font-mono font-bold flex items-center justify-center text-xs">
+          02
+        </div>
+        <h4 class="font-serif font-bold text-base text-stone-900">Scan with Any Camera</h4>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Open your smartphone camera or use our built-in scanner. No app download or account login is required.
+        </p>
+      </div>
+
+      <div class="bg-white p-5 rounded-lg border border-[#e2dacf] space-y-2">
+        <div class="w-8 h-8 rounded-full bg-[#eef4f0] text-[#114232] font-mono font-bold flex items-center justify-center text-xs">
+          03
+        </div>
+        <h4 class="font-serif font-bold text-base text-stone-900">Explore Rich History</h4>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Access audio guides, high-resolution archival photos, historical context, and provenance records in seconds.
+        </p>
+      </div>
+    </div>
+
+    <div class="pt-2">
+      <a href="{{ url_for('public.collection') }}"
+         class="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-stone-950 bg-amber-400 hover:bg-amber-300 rounded shadow-sm">
+        {{ icons.icon('qr', 'w-4 h-4 text-stone-950') }}
+        <span>Preview Collection Online</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Museum Galleries Directory -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-white p-6 rounded-lg border border-[#e2dacf] space-y-4">
+      <div class="flex items-center gap-2 text-[#0c3125]">
+        {{ icons.icon('compass', 'w-5 h-5 text-amber-500') }}
+        <h3 class="font-serif font-bold text-lg">Permanent Exhibition Pavilions</h3>
+      </div>
+      <div class="divide-y divide-[#f0eae1] text-xs text-stone-700 space-y-1">
+        <div class="py-2.5 flex justify-between items-start gap-3">
+          <div>
+            <strong class="text-stone-900 block font-serif">Pavilion 1: General Manuel Tinio Memorial Shrine</strong>
+            <span class="text-stone-500">Katipunan revolutionary relics, sabres, medals, and Northern Luzon campaign history.</span>
+          </div>
+          <span class="font-mono text-[#185a45] shrink-0 font-semibold">Ground</span>
+        </div>
+        <div class="py-2.5 flex justify-between items-start gap-3">
+          <div>
+            <strong class="text-stone-900 block font-serif">Pavilion 2: Founding Charter & Administrative Wing</strong>
+            <span class="text-stone-500">1966 municipal charters, vintage typewriters, and handwritten student registries.</span>
+          </div>
+          <span class="font-mono text-[#185a45] shrink-0 font-semibold">East</span>
+        </div>
+        <div class="py-2.5 flex justify-between items-start gap-3">
+          <div>
+            <strong class="text-stone-900 block font-serif">Pavilion 3: Alumni Hall of Fame & Photographs</strong>
+            <span class="text-stone-500">Graduating class photos from 1960 to present, pioneer faculty portraits.</span>
+          </div>
+          <span class="font-mono text-[#185a45] shrink-0 font-semibold">West</span>
+        </div>
+        <div class="py-2.5 flex justify-between items-start gap-3">
+          <div>
+            <strong class="text-stone-900 block font-serif">Pavilion 4: Performing Arts & Memorabilia</strong>
+            <span class="text-stone-500">Rondalla instruments, championship banners, school bells, and sports trophies.</span>
+          </div>
+          <span class="font-mono text-[#185a45] shrink-0 font-semibold">North</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border border-[#e2dacf] space-y-4">
+      <div class="flex items-center gap-2 text-[#0c3125]">
+        {{ icons.icon('pin', 'w-5 h-5 text-amber-500') }}
+        <h3 class="font-serif font-bold text-lg">Location & Credentials</h3>
+      </div>
+      <p class="text-xs text-stone-600 leading-relaxed">
+        General Tinio National High School is situated at the foothills of the Sierra Madre mountain range in Nueva Ecija.
+      </p>
+
+      <div class="space-y-2 text-xs text-stone-700 bg-[#faf8f5] p-4 rounded border border-[#e6dfd3]">
+        <p><strong>School:</strong> General Tinio National High School (GTNHS)</p>
+        <p><strong>Municipality:</strong> General Tinio (formerly Papaya), Nueva Ecija, 3104</p>
+        <p><strong>DepEd Division:</strong> Schools Division of Nueva Ecija (Region III)</p>
+        <p><strong>DepEd School ID:</strong> 300806</p>
+        <p><strong>Curatorial Email:</strong> heritage.gtnhs@deped.gov.ph</p>
+      </div>
+
+      <div class="pt-4 border-t border-[#f0eae1] text-xs text-stone-500 flex items-center justify-between">
+        <span>Free Group & Tour Bookings</span>
+        <span class="font-semibold text-[#185a45]">Mon–Fri 8AM–5PM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visitor Notes -->
+  <div class="bg-[#f7f4ee] rounded-lg border border-[#e2dacf] p-6 sm:p-8">
+    <h3 class="font-serif text-xl font-bold text-[#0c3125] mb-4">Visitor Notes</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-stone-700">
+      <div class="space-y-2">
+        <div class="flex items-start gap-2">
+          {{ icons.icon('shield', 'w-5 h-5 text-[#185a45] shrink-0 mt-0.5') }}
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-1">Respecting the Collection</h4>
+            <p>Please do not touch the artifacts or cases. Photography without flash is welcome; tripods and flash may damage delicate documents.</p>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-2">
+        <div class="flex items-start gap-2">
+          {{ icons.icon('users', 'w-5 h-5 text-[#185a45] shrink-0 mt-0.5') }}
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-1">Access & Tours</h4>
+            <p>The ground-floor gallery is step-free. For class visits, alumni homecomings, or research access, contact the Heritage Committee in advance.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

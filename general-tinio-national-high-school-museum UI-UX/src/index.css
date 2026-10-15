@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --gtnhs-green-dark: #0a2920;
+    --gtnhs-green: #114232;
+    --gtnhs-green-light: #185a45;
+    --gtnhs-gold: #c68a1a;
+    --gtnhs-gold-light: #e5a93c;
+    --gtnhs-gold-muted: #fef3c7;
+    --gtnhs-parchment: #faf8f5;
+    --gtnhs-paper: #f4efe6;
+    --gtnhs-border: #e6dfd3;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #faf8f5;
+    color: #1c1917;
+  }
+
+  h1, h2, h3, .font-serif-title {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+
+  .font-institutional {
+    font-family: 'Cinzel', serif;
+  }
+}
+
+@media print {
+  header, footer, .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

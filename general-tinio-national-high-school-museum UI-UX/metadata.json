@@ -1,0 +1,6 @@
+{
+  "name": "General Tinio National High School Museum",
+  "description": "Official digital archive and museum gallery of General Tinio National High School, featuring historical artifacts, documents, photographs, memorabilia, and QR code exhibit guides.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

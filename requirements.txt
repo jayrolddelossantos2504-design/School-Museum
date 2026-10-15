@@ -1,0 +1,27 @@
+# School Museum Website — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# Web framework
+Flask==3.1.0
+Werkzeug==3.1.3
+
+# Authentication and forms (CSRF protection)
+Flask-Login==0.6.3
+Flask-WTF==1.2.2
+WTForms==3.2.1
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Database driver for MySQL / MariaDB
+mysql-connector-python==9.1.0
+
+# Image storage
+cloudinary==1.41.0
+Pillow==11.3.0
+
+# QR code generation
+qrcode[pil]==8.2
+
+# Production WSGI server
+waitress==3.0.2

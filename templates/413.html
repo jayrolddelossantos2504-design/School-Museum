@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}File Too Large — GTNHS Heritage Museum{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-200px)] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+  <div class="max-w-md w-full text-center">
+    <!-- Error Icon -->
+    <div class="inline-flex items-center justify-center w-20 h-20 bg-orange-100 rounded-full mb-6">
+      {{ icons.icon('alert-circle', 'w-10 h-10 text-orange-600') }}
+    </div>
+
+    <!-- Error Code & Title -->
+    <div class="mb-4">
+      <p class="text-6xl font-serif font-bold text-orange-600 mb-2">413</p>
+      <h1 class="text-3xl font-serif font-bold text-stone-900 mb-2">File Too Large</h1>
+    </div>
+
+    <!-- Error Message -->
+    <p class="text-base text-stone-600 mb-8 leading-relaxed">
+      The file you tried to upload exceeds the maximum allowed size. Please choose a smaller image and try again.
+    </p>
+
+    <!-- Size Info -->
+    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
+      <p class="text-sm font-medium text-orange-900 mb-1">Maximum file size</p>
+      <p class="text-xs text-orange-800 font-mono">10 MB per image</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="javascript:history.back()"
+         class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#185a45] hover:bg-[#114232] text-white font-semibold rounded-lg transition-colors">
+        {{ icons.icon('arrow-left', 'w-4 h-4') }}
+        <span>Go Back</span>
+      </a>
+      <a href="{{ url_for('public.index') }}"
+         class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-stone-100 hover:bg-stone-200 text-stone-900 font-medium rounded-lg transition-colors">
+        {{ icons.icon('home', 'w-4 h-4') }}
+        <span>Back to Home</span>
+      </a>
+    </div>
+
+    <!-- Help Text -->
+    <div class="mt-8 pt-8 border-t border-stone-200">
+      <p class="text-xs text-stone-500">
+        Tip: Compress your image before uploading to reduce file size.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

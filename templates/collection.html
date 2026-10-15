@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}Collection — General Tinio NHS Heritage Museum{% endblock %}
+
+{% block content %}
+<section id="collection" class="py-14 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <!-- Section Header -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-[#e2dacf]">
+    <div>
+      <p class="text-xs font-sans uppercase tracking-widest text-[#185a45] font-semibold mb-1">
+        Permanent Museum Catalog
+      </p>
+      <h1 class="text-2xl sm:text-3xl font-serif font-bold text-[#0c3125]">
+        Explore the School Heritage Archives
+      </h1>
+      <p class="text-stone-600 text-sm mt-1 max-w-xl">
+        Each artifact is indexed with its historical accession credentials and scannable QR token.
+      </p>
+    </div>
+  </div>
+
+  <!-- Search and Filter Controls -->
+  <div class="space-y-4 mb-8">
+    <form method="get" action="{{ url_for('public.collection') }}" class="flex flex-col sm:flex-row gap-3 items-stretch">
+      <!-- Search Input -->
+      <div class="relative flex-1">
+        {{ icons.icon('search', 'w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none') }}
+        <input
+          type="text"
+          name="q"
+          value="{{ query or '' }}"
+          placeholder="Search by artifact title, era, accession no., or donor..."
+          class="w-full pl-10 pr-4 py-2.5 text-sm bg-white border border-[#d8d1c5] rounded focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent placeholder:text-stone-400 shadow-sm"
+        />
+      </div>
+
+      <!-- Category Dropdown -->
+      <select name="category" class="py-2.5 px-3 text-xs bg-white border border-[#d8d1c5] rounded focus:outline-none focus:ring-2 focus:ring-[#185a45] text-stone-800">
+        <option value="">All Categories</option>
+        {% for c in categories %}
+          <option value="{{ c.CategoryID }}" {{ "selected" if selected_category == c.CategoryID else "" }}>
+            {{ c.Category_Name }}
+          </option>
+        {% endfor %}
+      </select>
+
+      <button type="submit" class="px-6 py-2.5 text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 rounded transition-colors shadow-sm whitespace-nowrap">
+        Search
+      </button>
+
+      {% if query or selected_category %}
+        <a href="{{ url_for('public.collection') }}"
+           class="px-6 py-2.5 text-sm font-medium text-[#0c3125] bg-[#eef4f0] hover:bg-[#e1ede5] border border-[#bed2c7] rounded transition-colors whitespace-nowrap text-center">
+          Clear
+        </a>
+      {% endif %}
+    </form>
+
+    <!-- Category Filter Chips -->
+    <div class="flex flex-wrap items-center gap-2 pt-1">
+      <a href="{{ url_for('public.collection', q=query or none) }}"
+         class="px-3.5 py-1.5 text-xs rounded transition-colors whitespace-nowrap {{ 'bg-[#0c3125] text-amber-300 font-semibold shadow-sm' if not selected_category else 'bg-[#ede8df] text-stone-700 hover:bg-[#e2dacf]' }}">
+        All Collections
+      </a>
+      {% for cat in categories %}
+        <a href="{{ url_for('public.collection', q=query or none, category=cat.CategoryID) }}"
+           class="px-3.5 py-1.5 text-xs rounded transition-colors whitespace-nowrap {{ 'bg-[#0c3125] text-amber-300 font-semibold shadow-sm' if selected_category == cat.CategoryID else 'bg-[#ede8df] text-stone-700 hover:bg-[#e2dacf]' }}">
+          {{ cat.Category_Name }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Result Count -->
+  <div class="flex items-center justify-between text-xs text-stone-500 mb-6 font-sans">
+    <div>
+      Showing <span class="font-semibold text-stone-800">{{ total }}</span> curated item{{ "s" if total != 1 else "" }}
+      {% if query %} matching "{{ query }}"{% endif %}
+    </div>
+  </div>
+
+  <!-- Items Grid -->
+  {% if items %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for item in items %}
+        <article class="group cursor-pointer bg-white rounded-lg border border-[#e2dacf] overflow-hidden hover:border-[#185a45] hover:shadow-md transition-all duration-300 flex flex-col">
+          <!-- Image Container -->
+          <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
+            {% if item.Cover_URL %}
+              <img
+                src="{{ item.Cover_URL }}"
+                alt="{{ item.Cover_Alt or item.Item_Name }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy"
+              />
+            {% else %}
+              <div class="w-full h-full flex items-center justify-center bg-stone-200 text-stone-400">
+                {{ icons.icon('image', 'w-10 h-10') }}
+              </div>
+            {% endif %}
+
+            <!-- QR Quick Indicator -->
+            <div class="absolute top-3 right-3 bg-stone-950/75 backdrop-blur-sm text-amber-300 p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+              {{ icons.icon('qr', 'w-4 h-4') }}
+            </div>
+          </a>
+
+          <!-- Card Content -->
+          <div class="p-5 flex-1 flex flex-col justify-between">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2 text-xs text-stone-500 font-sans">
+                <span class="font-semibold text-[#185a45]">{{ item.Category_Name or 'General Exhibit' }}</span>
+                {% if item.Date_Added %}
+                  <span aria-hidden="true">·</span>
+                  <span class="font-mono tabular-nums text-stone-600">{{ item.Date_Added.strftime("%Y") }}</span>
+                {% endif %}
+              </div>
+
+              <h2 class="font-serif text-lg font-bold text-stone-900 group-hover:text-[#114232] transition-colors leading-snug">
+                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}">{{ item.Item_Name }}</a>
+              </h2>
+
+              <p class="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                {{ item.Description | truncate(110) }}
+              </p>
+            </div>
+
+            <div class="pt-4 mt-4 border-t border-[#f0eae1] flex items-center justify-end text-[11px] text-stone-500">
+              <span class="text-amber-800 font-medium group-hover:underline flex items-center gap-0.5">
+                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}" class="flex items-center gap-1">
+                  Inspect {{ icons.icon('arrow-right', 'w-3 h-3') }}
+                </a>
+              </span>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if total_pages > 1 %}
+      <nav class="flex items-center justify-center gap-2 mt-12 pt-8 border-t border-[#e2dacf]" aria-label="Pagination">
+        {% if page > 1 %}
+          <a href="{{ url_for('public.collection', q=query, category=selected_category, page=page - 1) }}"
+             class="px-4 py-2 text-sm font-medium text-[#0c3125] bg-white hover:bg-[#eef4f0] border border-[#d8d1c5] rounded transition-colors">
+            ← Previous
+          </a>
+        {% else %}
+          <span class="px-4 py-2 text-sm text-stone-400 bg-stone-100 border border-stone-200 rounded">
+            ← Previous
+          </span>
+        {% endif %}
+
+        <span class="px-4 py-2 text-sm font-semibold text-stone-900">
+          Page {{ page }} of {{ total_pages }}
+        </span>
+
+        {% if page < total_pages %}
+          <a href="{{ url_for('public.collection', q=query, category=selected_category, page=page + 1) }}"
+             class="px-4 py-2 text-sm font-medium text-[#0c3125] bg-white hover:bg-[#eef4f0] border border-[#d8d1c5] rounded transition-colors">
+            Next →
+          </a>
+        {% else %}
+          <span class="px-4 py-2 text-sm text-stone-400 bg-stone-100 border border-stone-200 rounded">
+            Next →
+          </span>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-16 px-4 bg-white rounded-lg border border-dashed border-[#d8d1c5] my-6">
+      {{ icons.icon('search', 'w-10 h-10 text-stone-400 mx-auto mb-3') }}
+      <h3 class="font-serif text-lg font-bold text-stone-900">No Museum Relics Found</h3>
+      <p class="text-sm text-stone-500 max-w-md mx-auto mt-1 mb-4">
+        We could not find any exhibit matching your current search criteria.
+      </p>
+      <a href="{{ url_for('public.collection') }}"
+         class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase text-stone-950 bg-amber-400 hover:bg-amber-300 rounded transition-colors">
+        Reset All Filters
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

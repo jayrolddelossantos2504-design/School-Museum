@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}{{ 'Add' if mode == 'new' else 'Edit' }} Item — GTNHS Heritage Museum Console{% endblock %}
+
+{% block content %}
+{% with admin_title=("Add Item" if mode == 'new' else "Edit Item") %}{% include "_admin_header.html" %}{% endwith %}
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white rounded-lg border border-stone-200 shadow-sm p-6 sm:p-8">
+    {% if mode == 'edit' %}
+      <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <p class="text-sm text-blue-900">
+          <strong>Public link token (never changes):</strong>
+          <code class="block mt-1 font-mono text-xs bg-blue-100 p-2 rounded text-blue-800">{{ item.Public_Token }}</code>
+        </p>
+      </div>
+    {% endif %}
+
+    <form method="post" novalidate class="space-y-6">
+      {{ form.hidden_tag() }}
+
+      <!-- Item Name -->
+      <div>
+        {{ form.name.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.name(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900") }}
+        {% for error in form.name.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Category -->
+      <div>
+        {{ form.category_id.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.category_id(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900") }}
+        {% for error in form.category_id.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Description -->
+      <div>
+        {{ form.description.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.description(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900", rows="4") }}
+        {% for error in form.description.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Historical Details -->
+      <div>
+        {{ form.historical_details.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.historical_details(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900", rows="4") }}
+        {% for error in form.historical_details.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Published Checkbox -->
+      <div class="flex items-center gap-3">
+        {{ form.is_published(class_="w-4 h-4 cursor-pointer accent-[#185a45]") }}
+        {{ form.is_published.label(class_="text-sm font-medium text-stone-900 cursor-pointer") }}
+      </div>
+
+      <!-- Image Upload Info -->
+      {% if mode == 'new' %}
+      <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <div class="flex gap-3">
+          {{ icons.icon('info', 'w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5') }}
+          <div>
+            <p class="text-sm font-medium text-amber-900 mb-1">Images added after item creation</p>
+            <p class="text-sm text-amber-800">Save this item first, then you'll be able to upload images and set a cover photo.</p>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="flex gap-3">
+          {{ icons.icon('image', 'w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5') }}
+          <div>
+            <p class="text-sm font-medium text-blue-900 mb-1">Manage images separately</p>
+            <p class="text-sm text-blue-800">
+              Go to the <a href="{{ url_for('admin.item_detail', item_id=item.ItemID) }}" class="underline font-semibold hover:text-blue-700">item detail page</a> to upload, edit, or delete images.
+            </p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3 pt-4 border-t border-stone-200">
+        {{ form.submit(class_="px-6 py-2.5 bg-[#185a45] hover:bg-[#114232] text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:ring-offset-2") }}
+        <a href="{{ url_for('admin.items') }}"
+           class="px-6 py-2.5 bg-stone-200 hover:bg-stone-300 text-stone-900 font-medium rounded-lg transition-colors">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

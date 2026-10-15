@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}{{ 'Add' if mode == 'new' else 'Edit' }} Category — GTNHS Heritage Museum Console{% endblock %}
+
+{% block content %}
+{% with admin_title=("Add Category" if mode == 'new' else "Edit Category") %}{% include "_admin_header.html" %}{% endwith %}
+
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white rounded-lg border border-stone-200 shadow-sm p-6 sm:p-8">
+    <form method="post" novalidate class="space-y-6">
+      {{ form.hidden_tag() }}
+
+      <!-- Category Name -->
+      <div>
+        {{ form.name.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.name(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900") }}
+        {% for error in form.name.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Description -->
+      <div>
+        {{ form.description.label(class_="block text-sm font-semibold text-stone-900 mb-1.5") }}
+        {{ form.description(class_="w-full px-4 py-2.5 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:border-transparent text-stone-900", rows="4") }}
+        {% for error in form.description.errors %}
+          <p class="mt-1 text-sm text-red-600 flex items-center gap-1">
+            {{ icons.icon('alert', 'w-3.5 h-3.5') }}
+            {{ error }}
+          </p>
+        {% endfor %}
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3 pt-4 border-t border-stone-200">
+        {{ form.submit(class_="px-6 py-2.5 bg-[#185a45] hover:bg-[#114232] text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[#185a45] focus:ring-offset-2") }}
+        <a href="{{ url_for('admin.categories') }}"
+           class="px-6 py-2.5 bg-stone-200 hover:bg-stone-300 text-stone-900 font-medium rounded-lg transition-colors">
+          Cancel
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

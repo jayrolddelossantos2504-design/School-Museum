@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}{{ item.Item_Name }} — General Tinio NHS Heritage Museum{% endblock %}
+
+{% block content %}
+<article class="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <!-- Breadcrumb -->
+  <nav class="mb-6">
+    <a href="{{ url_for('public.collection') }}"
+       class="inline-flex items-center gap-2 text-sm text-stone-600 hover:text-[#185a45] transition-colors">
+      {{ icons.icon('arrow-left', 'w-4 h-4') }}
+      <span>Back to the Collection</span>
+    </a>
+  </nav>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+    <!-- Left Column: Images & QR -->
+    <div class="lg:col-span-5 space-y-6">
+      <!-- Main Image -->
+      <figure class="relative rounded-lg overflow-hidden border border-[#d6cebe] shadow-lg bg-stone-900">
+        {% if images %}
+          <img
+            src="{{ images[0].Image_URL }}"
+            alt="{{ images[0].Alt_Text or item.Item_Name }}"
+            class="w-full aspect-[4/3] object-cover"
+            loading="eager"
+          />
+          {% if images[0].Caption %}
+            <figcaption class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4 text-white text-sm">
+              {{ images[0].Caption }}
+            </figcaption>
+          {% endif %}
+        {% else %}
+          <div class="w-full aspect-[4/3] flex items-center justify-center bg-stone-200 text-stone-400">
+            {{ icons.icon('image', 'w-16 h-16') }}
+            <span class="ml-2 text-sm">No image on record</span>
+          </div>
+        {% endif %}
+      </figure>
+
+      <!-- Additional Images -->
+      {% if images | length > 1 %}
+        <div class="grid grid-cols-3 gap-3">
+          {% for image in images %}
+            <div class="relative rounded overflow-hidden border border-[#e2dacf] shadow-sm aspect-square bg-stone-100 cursor-pointer hover:border-[#185a45] transition-colors">
+              <img
+                src="{{ image.Image_URL }}"
+                alt="{{ image.Alt_Text or item.Item_Name }}"
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- QR Card -->
+      <div class="bg-white rounded-lg border border-[#e2dacf] p-6 shadow-sm">
+        <div class="flex items-center gap-2 mb-4">
+          {{ icons.icon('qr', 'w-5 h-5 text-[#185a45]') }}
+          <h3 class="font-serif text-lg font-bold text-stone-900">Permanent Exhibit Record</h3>
+        </div>
+
+        <div class="flex justify-center mb-4">
+          <div class="bg-white p-4 rounded-lg border-2 border-[#e2dacf] inline-block">
+            <img
+              src="{{ url_for('public.item_qr_png', token=item.Public_Token) }}"
+              alt="QR code linking to {{ item.Item_Name }}"
+              class="w-48 h-48"
+            />
+          </div>
+        </div>
+
+        <p class="text-xs text-center text-stone-600 mb-4">
+          Scan this code at the exhibit to reopen this record at any time.
+        </p>
+
+        <div class="flex gap-2">
+          <button
+            onclick="navigator.clipboard.writeText('{{ request.url }}'); alert('Link copied to clipboard!');"
+            class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 rounded transition-colors">
+            {{ icons.icon('share', 'w-3.5 h-3.5') }}
+            <span>Copy Link</span>
+          </button>
+          <a href="{{ url_for('public.item_qr_png', token=item.Public_Token) }}" download
+             class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-medium text-[#0c3125] bg-[#eef4f0] hover:bg-[#e1ede5] border border-[#bed2c7] rounded transition-colors">
+            {{ icons.icon('download', 'w-3.5 h-3.5') }}
+            <span>Save QR</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Information -->
+    <div class="lg:col-span-7 space-y-6">
+      <!-- Category & Date -->
+      <div class="flex flex-wrap items-center gap-2 text-xs text-stone-500 font-sans">
+        <span class="px-3 py-1 bg-[#eef4f0] text-[#185a45] font-semibold rounded-full">
+          {{ item.Category_Name or 'General Exhibit' }}
+        </span>
+        {% if item.Date_Added %}
+          <span class="flex items-center gap-1">
+            {{ icons.icon('clock', 'w-3.5 h-3.5 text-stone-400') }}
+            <span>Catalogued {{ item.Date_Added.strftime("%d %b %Y") }}</span>
+          </span>
+        {% endif %}
+      </div>
+
+      <!-- Title -->
+      <h1 class="text-3xl sm:text-4xl font-serif font-bold text-[#0c3125] leading-tight">
+        {{ item.Item_Name }}
+      </h1>
+
+      <!-- Metadata Panel -->
+      <div class="bg-[#f7f4ee] rounded-lg border border-[#e2dacf] p-6">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div>
+            <dt class="text-xs uppercase tracking-wider text-stone-500 font-semibold mb-1">Category</dt>
+            <dd class="text-stone-900">{{ item.Category_Name or "—" }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs uppercase tracking-wider text-stone-500 font-semibold mb-1">Date Catalogued</dt>
+            <dd class="text-stone-900">
+              {{ item.Date_Added.strftime("%d %B %Y") if item.Date_Added else "—" }}
+            </dd>
+          </div>
+          <div class="sm:col-span-2">
+            <dt class="text-xs uppercase tracking-wider text-stone-500 font-semibold mb-1">Record Token</dt>
+            <dd class="font-mono text-xs text-stone-700 bg-white px-3 py-1.5 rounded border border-[#e2dacf] inline-block">
+              {{ item.Public_Token }}
+            </dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Description -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-2 text-[#185a45]">
+          {{ icons.icon('book-open', 'w-5 h-5') }}
+          <h2 class="font-serif text-xl font-bold text-stone-900">About This Artifact</h2>
+        </div>
+        <p class="text-base text-stone-700 leading-relaxed">
+          {{ item.Description }}
+        </p>
+      </div>
+
+      <!-- Historical Details -->
+      {% if item.Historical_Details %}
+        <div class="space-y-3 pt-4 border-t border-[#e6dfd3]">
+          <div class="flex items-center gap-2 text-[#185a45]">
+            {{ icons.icon('history', 'w-5 h-5') }}
+            <h2 class="font-serif text-xl font-bold text-stone-900">Historical Significance</h2>
+          </div>
+          <p class="text-base text-stone-700 leading-relaxed">
+            {{ item.Historical_Details }}
+          </p>
+        </div>
+      {% else %}
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm text-amber-900">
+          <p>
+            Detailed historical notes for this artifact are being prepared by the Heritage Committee.
+          </p>
+        </div>
+      {% endif %}
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-3 pt-4">
+        <button
+          onclick="window.print();"
+          class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[#0c3125] bg-white hover:bg-[#eef4f0] border border-[#bed2c7] rounded transition-colors">
+          {{ icons.icon('printer', 'w-4 h-4') }}
+          <span>Print Placard</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</article>
+
+<style>
+  @media print {
+    header, footer, nav, .no-print, button {
+      display: none !important;
+    }
+  }
+</style>
+{% endblock %}

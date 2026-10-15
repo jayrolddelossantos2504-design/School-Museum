@@ -1,0 +1,66 @@
+{% import "_icons.html" as icons %}
+<!-- Admin Section Header -->
+<section class="bg-gradient-to-r from-[#0c3125] to-[#114232] border-b border-[#1b4d3c] shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header Top: Title & Public Link -->
+    <div class="py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div class="flex-1">
+        <div class="flex items-center gap-2 mb-2">
+          {{ icons.icon('shield', 'w-4 h-4 text-amber-400') }}
+          <span class="text-xs uppercase tracking-widest font-semibold text-amber-300">
+            GTNHS Museum Console · {{ current_user.role }} access
+          </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-white mb-1">
+          {{ admin_title or "Staff Console" }}
+        </h1>
+        <p class="text-sm text-emerald-100">
+          Signed in as <strong class="font-semibold">{{ current_user.username }}</strong>
+        </p>
+      </div>
+      <a href="{{ url_for('public.index') }}"
+         class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-stone-950 font-medium rounded-lg transition-colors shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 whitespace-nowrap">
+        {{ icons.icon('eye', 'w-4 h-4') }}
+        <span>View Public Site</span>
+      </a>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="border-t border-[#1b4d3c] flex flex-wrap items-center gap-0 -mb-px" aria-label="Console sections">
+      <a href="{{ url_for('admin.dashboard') }}"
+         class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-colors {{ 'border-amber-400 text-amber-300 bg-[#0a1f1a]' if request.endpoint == 'admin.dashboard' else 'border-transparent text-emerald-100 hover:text-white hover:border-emerald-400/50' }}">
+        {{ icons.icon('grid', 'w-4 h-4') }}
+        <span>Dashboard</span>
+      </a>
+      <a href="{{ url_for('admin.items') }}"
+         class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-colors {{ 'border-amber-400 text-amber-300 bg-[#0a1f1a]' if request.endpoint in ['admin.items', 'admin.item_new', 'admin.item_edit', 'admin.item_detail', 'admin.item_qr'] else 'border-transparent text-emerald-100 hover:text-white hover:border-emerald-400/50' }}">
+        {{ icons.icon('archive', 'w-4 h-4') }}
+        <span>Items</span>
+      </a>
+      <a href="{{ url_for('admin.categories') }}"
+         class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-colors {{ 'border-amber-400 text-amber-300 bg-[#0a1f1a]' if request.endpoint in ['admin.categories', 'admin.category_new', 'admin.category_edit'] else 'border-transparent text-emerald-100 hover:text-white hover:border-emerald-400/50' }}">
+        {{ icons.icon('folder', 'w-4 h-4') }}
+        <span>Categories</span>
+      </a>
+      {% if current_user.role == 'admin' %}
+        <a href="{{ url_for('admin.logs') }}"
+           class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-colors {{ 'border-amber-400 text-amber-300 bg-[#0a1f1a]' if request.endpoint == 'admin.logs' else 'border-transparent text-emerald-100 hover:text-white hover:border-emerald-400/50' }}">
+          {{ icons.icon('history', 'w-4 h-4') }}
+          <span>Activity Logs</span>
+        </a>
+        <a href="{{ url_for('admin.accounts') }}"
+           class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 transition-colors {{ 'border-amber-400 text-amber-300 bg-[#0a1f1a]' if request.endpoint == 'admin.accounts' else 'border-transparent text-emerald-100 hover:text-white hover:border-emerald-400/50' }}">
+          {{ icons.icon('users', 'w-4 h-4') }}
+          <span>Accounts</span>
+        </a>
+      {% endif %}
+      <form method="post" action="{{ url_for('auth.logout') }}" class="ml-auto">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="flex items-center gap-1.5 px-4 py-3 text-sm font-medium border-b-2 border-transparent text-red-300 hover:text-red-200 hover:border-red-400/50 transition-colors">
+          {{ icons.icon('logout', 'w-4 h-4') }}
+          <span>Sign Out</span>
+        </button>
+      </form>
+    </nav>
+  </div>
+</section>

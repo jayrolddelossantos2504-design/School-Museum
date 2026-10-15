@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
+  // Mobile menu toggle
+  const mobilMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobilMenuBtn && mobileMenu) {
+    mobilMenuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('hidden');
+    });
+  }
+
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector(".site-nav");
   if (toggle && nav) {

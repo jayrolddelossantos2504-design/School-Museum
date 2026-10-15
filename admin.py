@@ -287,7 +287,7 @@ def item_qr_png(item_id):
         io.BytesIO(png),
         mimetype="image/png",
         as_attachment=as_attachment,
-        download_name=f"qr-{item['Public_Token']}.png",
+        download_name=f"qr-{item['public_token']}.png",
     )
 
 
@@ -310,7 +310,7 @@ def item_publish(item_id):
             "item",
             item_id,
             f"{'Published' if new_state else 'Unpublished'} "
-            f"item '{item['Item_Name']}'",
+            f"item '{item['item_name']}'",
         )
         flash("Item published." if new_state else "Item unpublished.", "success")
     return redirect(url_for("admin.items"))
@@ -342,8 +342,8 @@ def item_archive(item_id):
         "item_unarchive" if item["isarchived"] else "item_archive",
         "item",
         item_id,
-        f"{'Unarchived' if item['IsArchived'] else 'Archived'} "
-        f"item '{item['Item_Name']}'",
+        f"{'Unarchived' if item['isarchived'] else 'Archived'} "
+        f"item '{item['item_name']}'",
     )
     return redirect(url_for("admin.items"))
 
@@ -427,7 +427,7 @@ def image_upload(item_id):
         "image_upload",
         "item_image",
         new_image_id,
-        f"Uploaded image for item '{item['Item_Name']}'"
+        f"Uploaded image for item '{item['item_name']}'"
         + (" (set as cover)" if is_cover else ""),
     )
     flash("Image uploaded.", "success")
@@ -660,7 +660,7 @@ def category_delete(category_id):
 
     if items_in_use:
         flash(
-            f"Cannot delete '{category['Category_Name']}': "
+            f"Cannot delete '{category['category_name']}': "
             f"{items_in_use} item(s) still use this category. "
             "Reassign those items first.",
             "error",
@@ -674,9 +674,9 @@ def category_delete(category_id):
         "category_delete",
         "category",
         category_id,
-        f"Deleted category '{category['Category_Name']}'",
+        f"Deleted category '{category['category_name']}'",
     )
-    flash(f"Category '{category['Category_Name']}' deleted.", "success")
+    flash(f"Category '{category['category_name']}' deleted.", "success")
     return redirect(url_for("admin.categories"))
 
 

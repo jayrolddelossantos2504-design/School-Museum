@@ -36,22 +36,22 @@
         <tbody class="divide-y divide-stone-200">
           {% for c in categories %}
           <tr class="hover:bg-stone-50 transition-colors">
-            <td class="px-6 py-4 text-sm font-medium text-stone-900">{{ c.Category_Name }}</td>
-            <td class="px-6 py-4 text-sm text-stone-600">{{ c.Description or "—" }}</td>
+            <td class="px-6 py-4 text-sm font-medium text-stone-900">{{ c.category_name }}</td>
+            <td class="px-6 py-4 text-sm text-stone-600">{{ c.description or "—" }}</td>
             <td class="px-6 py-4 text-center">
               <span class="inline-flex items-center justify-center w-6 h-6 bg-[#eef4f0] text-[#114232] font-semibold text-xs rounded-full">
-                {{ item_counts.get(c.CategoryID, 0) }}
+                {{ item_counts.get(c.categoryid, 0) }}
               </span>
             </td>
             <td class="px-6 py-4 text-right text-sm font-medium">
               <div class="flex items-center justify-end gap-2">
-                <a href="{{ url_for('admin.category_edit', category_id=c.CategoryID) }}"
+                <a href="{{ url_for('admin.category_edit', category_id=c.categoryid) }}"
                    class="inline-flex items-center gap-1 px-3 py-1.5 text-[#185a45] hover:bg-emerald-50 rounded transition-colors">
                   {{ icons.icon('pencil', 'w-3.5 h-3.5') }}
                   <span>Edit</span>
                 </a>
                 <form method="post"
-                      action="{{ url_for('admin.category_delete', category_id=c.CategoryID) }}"
+                      action="{{ url_for('admin.category_delete', category_id=c.categoryid) }}"
                       class="inline"
                       onsubmit="return confirm('Delete this category? This action cannot be undone.');">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

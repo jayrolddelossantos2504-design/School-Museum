@@ -12,7 +12,7 @@
       <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
         <p class="text-sm text-blue-900">
           <strong>Public link token (never changes):</strong>
-          <code class="block mt-1 font-mono text-xs bg-blue-100 p-2 rounded text-blue-800">{{ item.Public_Token }}</code>
+          <code class="block mt-1 font-mono text-xs bg-blue-100 p-2 rounded text-blue-800">{{ item.public_token }}</code>
         </p>
       </div>
     {% endif %}
@@ -92,7 +92,7 @@
           <div>
             <p class="text-sm font-medium text-blue-900 mb-1">Manage images separately</p>
             <p class="text-sm text-blue-800">
-              Go to the <a href="{{ url_for('admin.item_detail', item_id=item.ItemID) }}" class="underline font-semibold hover:text-blue-700">item detail page</a> to upload, edit, or delete images.
+              Go to the <a href="{{ url_for('admin.item_detail', item_id=item.itemid) }}" class="underline font-semibold hover:text-blue-700">item detail page</a> to upload, edit, or delete images.
             </p>
           </div>
         </div>

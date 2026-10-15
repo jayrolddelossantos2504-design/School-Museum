@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "_icons.html" as icons %}
 
-{% block title %}{{ item.Item_Name }} — GTNHS Heritage Museum Console{% endblock %}
+{% block title %}{{ item.item_name }} — GTNHS Heritage Museum Console{% endblock %}
 
 {% block content %}
 {% with admin_title="Item Record" %}{% include "_admin_header.html" %}{% endwith %}
@@ -11,24 +11,24 @@
   <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
     <div class="flex-1">
       <div class="flex items-center gap-3 mb-2">
-        <h1 class="text-3xl font-serif font-bold text-stone-900">{{ item.Item_Name }}</h1>
-        {% if item.IsArchived %}
+        <h1 class="text-3xl font-serif font-bold text-stone-900">{{ item.item_name }}</h1>
+        {% if item.isarchived %}
           <span class="inline-block px-3 py-1 bg-gray-200 text-gray-800 font-medium text-xs rounded-full">Archived</span>
-        {% elif item.IsPublished %}
+        {% elif item.ispublished %}
           <span class="inline-block px-3 py-1 bg-green-100 text-green-800 font-medium text-xs rounded-full">Published</span>
         {% else %}
           <span class="inline-block px-3 py-1 bg-amber-100 text-amber-800 font-medium text-xs rounded-full">Draft</span>
         {% endif %}
       </div>
-      <p class="text-sm text-stone-600">Category: <strong>{{ item.Category_Name or "—" }}</strong></p>
+      <p class="text-sm text-stone-600">Category: <strong>{{ item.category_name or "—" }}</strong></p>
     </div>
     <div class="flex flex-wrap items-center gap-2">
-      <a href="{{ url_for('admin.item_qr', item_id=item.ItemID) }}"
+      <a href="{{ url_for('admin.item_qr', item_id=item.itemid) }}"
          class="inline-flex items-center gap-2 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-900 font-medium rounded-lg transition-colors">
         {{ icons.icon('qr', 'w-4 h-4') }}
         <span>QR Code</span>
       </a>
-      <a href="{{ url_for('admin.item_edit', item_id=item.ItemID) }}"
+      <a href="{{ url_for('admin.item_edit', item_id=item.itemid) }}"
          class="inline-flex items-center gap-2 px-4 py-2 bg-[#185a45] hover:bg-[#114232] text-white font-medium rounded-lg transition-colors">
         {{ icons.icon('pencil', 'w-4 h-4') }}
         <span>Edit</span>
@@ -41,32 +41,32 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Public Token</h3>
-        <code class="block font-mono text-sm bg-stone-100 p-3 rounded text-stone-900 break-all">{{ item.Public_Token }}</code>
+        <code class="block font-mono text-sm bg-stone-100 p-3 rounded text-stone-900 break-all">{{ item.public_token }}</code>
       </div>
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Category</h3>
-        <p class="text-sm font-medium text-stone-900">{{ item.Category_Name or "—" }}</p>
+        <p class="text-sm font-medium text-stone-900">{{ item.category_name or "—" }}</p>
       </div>
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Description</h3>
-        <p class="text-sm text-stone-700 leading-relaxed">{{ item.Description }}</p>
+        <p class="text-sm text-stone-700 leading-relaxed">{{ item.description }}</p>
       </div>
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Historical Details</h3>
-        <p class="text-sm text-stone-700 leading-relaxed">{{ item.Historical_Details or "—" }}</p>
+        <p class="text-sm text-stone-700 leading-relaxed">{{ item.historical_details or "—" }}</p>
       </div>
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Created</h3>
         <p class="text-sm text-stone-700">
-          {{ item.CreatedByName or "—" }} on <br>
-          <span class="font-mono">{{ item.Date_Added.strftime("%Y-%m-%d %H:%M") if item.Date_Added else "—" }}</span>
+          {{ item.createdbyname or "—" }} on <br>
+          <span class="font-mono">{{ item.date_added.strftime("%Y-%m-%d %H:%M") if item.date_added else "—" }}</span>
         </p>
       </div>
       <div>
         <h3 class="text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">Last Updated</h3>
         <p class="text-sm text-stone-700">
-          {{ item.UpdatedByName or "—" }} on <br>
-          <span class="font-mono">{{ item.Updated_At.strftime("%Y-%m-%d %H:%M") if item.Updated_At else "—" }}</span>
+          {{ item.updatedbyname or "—" }} on <br>
+          <span class="font-mono">{{ item.updated_at.strftime("%Y-%m-%d %H:%M") if item.updated_at else "—" }}</span>
         </p>
       </div>
     </div>
@@ -91,31 +91,31 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
       {% for image in images %}
       <div class="relative group rounded-lg overflow-hidden border border-stone-200 hover:border-stone-400 transition-colors">
-        <img src="{{ image.Image_URL }}" alt="{{ image.Alt_Text or item.Item_Name }}" class="w-full h-40 object-cover">
-        {% if image.Is_Cover %}
+        <img src="{{ image.image_url }}" alt="{{ image.alt_text or item.item_name }}" class="w-full h-40 object-cover">
+        {% if image.is_cover %}
         <div class="absolute top-2 left-2">
           <span class="inline-block px-2 py-1 bg-green-500 text-white font-medium text-xs rounded">Cover</span>
         </div>
         {% endif %}
         <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 p-2">
-          {% if not image.Is_Cover %}
-          <form method="post" action="{{ url_for('admin.image_set_cover', item_id=item.ItemID, image_id=image.ImageID) }}" class="w-full">
+          {% if not image.is_cover %}
+          <form method="post" action="{{ url_for('admin.image_set_cover', item_id=item.itemid, image_id=image.imageid) }}" class="w-full">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="w-full px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium rounded transition-colors">
               Set as Cover
             </button>
           </form>
           {% endif %}
-          <form method="post" action="{{ url_for('admin.image_delete', item_id=item.ItemID, image_id=image.ImageID) }}" class="w-full" onsubmit="return confirm('Delete this image?');">
+          <form method="post" action="{{ url_for('admin.image_delete', item_id=item.itemid, image_id=image.imageid) }}" class="w-full" onsubmit="return confirm('Delete this image?');">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="w-full px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-medium rounded transition-colors">
               Delete
             </button>
           </form>
         </div>
-        {% if image.Caption %}
+        {% if image.caption %}
         <div class="p-2 bg-stone-50 border-t border-stone-200">
-          <p class="text-xs text-stone-600 line-clamp-2">{{ image.Caption }}</p>
+          <p class="text-xs text-stone-600 line-clamp-2">{{ image.caption }}</p>
         </div>
         {% endif %}
       </div>
@@ -131,7 +131,7 @@
         {{ icons.icon('plus', 'w-4 h-4') }}
         Upload an Image
       </h3>
-      <form method="post" enctype="multipart/form-data" action="{{ url_for('admin.image_upload', item_id=item.ItemID) }}" class="space-y-4 max-w-2xl">
+      <form method="post" enctype="multipart/form-data" action="{{ url_for('admin.image_upload', item_id=item.itemid) }}" class="space-y-4 max-w-2xl">
         {{ image_form.hidden_tag() }}
 
         <div>

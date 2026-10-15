@@ -89,8 +89,8 @@
           <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
             {% if item.Cover_URL %}
               <img
-                src="{{ item.Cover_URL }}"
-                alt="{{ item.Cover_Alt or item.Item_Name }}"
+                src="{{ item.cover_url }}"
+                alt="{{ item.cover_alt or item.item_name }}"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
@@ -110,15 +110,15 @@
           <div class="p-5 flex-1 flex flex-col justify-between">
             <div class="space-y-2">
               <div class="flex items-center gap-2 text-xs text-stone-500 font-sans">
-                <span class="font-semibold text-[#185a45]">{{ item.Category_Name or 'General Exhibit' }}</span>
-                {% if item.Date_Added %}
+                <span class="font-semibold text-[#185a45]">{{ item.category_name or 'General Exhibit' }}</span>
+                {% if item.date_added %}
                   <span aria-hidden="true">·</span>
-                  <span class="font-mono tabular-nums text-stone-600">{{ item.Date_Added.strftime("%Y") }}</span>
+                  <span class="font-mono tabular-nums text-stone-600">{{ item.date_added.strftime("%Y") }}</span>
                 {% endif %}
               </div>
 
               <h2 class="font-serif text-lg font-bold text-stone-900 group-hover:text-[#114232] transition-colors leading-snug">
-                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}">{{ item.Item_Name }}</a>
+                <a href="{{ url_for('public.item_detail', token=item.public_token) }}">{{ item.item_name }}</a>
               </h2>
 
               <p class="text-xs text-stone-600 line-clamp-2 leading-relaxed">

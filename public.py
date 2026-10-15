@@ -225,5 +225,5 @@ def item_qr_png(token):
     return send_file(
         io.BytesIO(png),
         mimetype="image/png",
-        download_name=f"qr-{row['Public_Token']}.png",
+        download_name=f"qr-{row['public_token']}.png",
     )

@@ -55,7 +55,7 @@ def is_configured(app):
             api_secret = getattr(cfg, 'api_secret', None)
             
             # Reject placeholder/demo values
-            placeholder_values = {'museum', 'replace-me', '144449628473789', ''}
+            placeholder_values = {'replace-me', '144449628473789', ''}
             if api_key in placeholder_values or api_secret in placeholder_values:
                 return False
             

@@ -38,20 +38,43 @@ def configure(app):
 
 
 def is_configured(app):
-    """True only when all three Cloudinary values look set.
+    """Check if Cloudinary has valid credentials configured.
     
     Args:
         app: Flask app instance, or None to check module-level config.
+    
+    Returns:
+        False if credentials are missing, placeholder, or demo values.
     """
     if app is None:
         # Check module-level cloudinary config
-        cfg = cloudinary.config()
-        return all([cfg.cloud_name, cfg.api_key, cfg.api_secret])
+        try:
+            cfg = cloudinary.config()
+            cloud_name = getattr(cfg, 'cloud_name', None)
+            api_key = getattr(cfg, 'api_key', None)
+            api_secret = getattr(cfg, 'api_secret', None)
+            
+            # Reject placeholder/demo values
+            placeholder_values = {'museum', 'replace-me', '144449628473789', ''}
+            if api_key in placeholder_values or api_secret in placeholder_values:
+                return False
+            
+            return bool(cloud_name and api_key and api_secret)
+        except Exception:
+            return False
     
-    return all(
-        app.config.get(key) and app.config.get(key) != "replace-me"
-        for key in ("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET")
-    )
+    # Check Flask app config
+    try:
+        placeholder_values = {'museum', 'replace-me', '144449628473789', ''}
+        
+        for key in ("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"):
+            val = app.config.get(key, '')
+            if not val or val in placeholder_values:
+                return False
+        
+        return True
+    except Exception:
+        return False
 
 
 def validate_image(file_storage):
@@ -98,10 +121,16 @@ def upload_image(file_storage, folder=IMAGE_FOLDER):
 
     Raises on failure; callers must not write database rows in that case.
     """
-    if is_configured(None):  # Will check module-level cloudinary config
-        return _upload_to_cloudinary(file_storage, folder)
-    else:
-        return _upload_to_local(file_storage)
+    # Try Cloudinary first if it's configured
+    try:
+        if is_configured(None):  # Will check module-level cloudinary config
+            return _upload_to_cloudinary(file_storage, folder)
+    except Exception:
+        # Cloudinary failed, fall back to local storage
+        pass
+    
+    # Use local storage as fallback
+    return _upload_to_local(file_storage)
 
 
 def _upload_to_cloudinary(file_storage, folder):

@@ -41,11 +41,12 @@ class AdminUser:
 
     @classmethod
     def from_row(cls, row):
+        # PostgreSQL RealDictCursor returns lowercase column names
         return cls(
-            admin_id=row["AdminID"],
-            username=row["Username"],
-            role=row["Role"],
-            is_active=row["IsActive"],
+            admin_id=row.get("adminid") or row.get("AdminID"),
+            username=row.get("username") or row.get("Username"),
+            role=row.get("role") or row.get("Role"),
+            is_active=row.get("isactive") or row.get("IsActive"),
         )
 
 
@@ -86,16 +87,16 @@ def login():
 
         if (
             row
-            and row["IsActive"]
-            and check_password_hash(row["Password_Hash"], form.password.data)
+            and row.get("isactive")  # PostgreSQL RealDictCursor uses lowercase
+            and check_password_hash(row["password_hash"], form.password.data)
         ):
             login_user(AdminUser.from_row(row))
             log_action(
                 "login",
                 "auth",
-                entity_id=row["AdminID"],
-                details=f"User '{row['Username']}' logged in",
-                admin_id=row["AdminID"],
+                entity_id=row["adminid"],
+                details=f"User '{row['username']}' logged in",
+                admin_id=row["adminid"],
             )
             next_page = request.args.get("next")
             return redirect(next_page if _is_safe_next(next_page) else url_for("admin.dashboard"))

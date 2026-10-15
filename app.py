@@ -171,6 +171,11 @@ def create_app(config_class=Config):
     return app
 
 
+# Create app instance for gunicorn (production)
+from config import get_config
+app = create_app(get_config())
+
+
 if __name__ == "__main__":
     from config import DevelopmentConfig
 

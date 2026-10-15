@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 """Initialize PostgreSQL database schema for School Museum.
 
-This script should be run once after deployment to set up the database tables.
-It reads the PostgreSQL schema file and executes it properly.
+This script should be run once after deployment to set up the database tables
+and create the initial admin account.
 """
 
 import os
 import sys
 import psycopg2
+from werkzeug.security import generate_password_hash
 
 def split_sql_statements(sql_content):
     """Split SQL content into individual statements.
@@ -51,8 +52,96 @@ def split_sql_statements(sql_content):
     
     return statements
 
-def init_database():
+def init_database(conn):
     """Initialize the database with schema."""
+    conn.autocommit = True
+    cursor = conn.cursor()
+    
+    # Read the schema file
+    print("Reading schema file...\n")
+    with open("school_museum_schema_postgres.sql", "r") as f:
+        schema_content = f.read()
+    
+    # Parse statements
+    statements = split_sql_statements(schema_content)
+    
+    # Execute each statement
+    print(f"Executing {len(statements)} SQL statements:\n")
+    success_count = 0
+    
+    for i, statement in enumerate(statements, 1):
+        try:
+            # Truncate long statements for display
+            display_stmt = statement
+            if len(display_stmt) > 70:
+                display_stmt = display_stmt[:70] + "..."
+            
+            print(f"[{i:2d}/{len(statements)}] {display_stmt}")
+            cursor.execute(statement)
+            print(f"       ✓ Success")
+            success_count += 1
+            
+        except psycopg2.Error as e:
+            error_msg = str(e).lower()
+            # Some statements may fail if they already exist - this is expected
+            if any(x in error_msg for x in ["already exists", "duplicate key", "unique violation", "constraint"]):
+                print(f"       ⊘ Already exists (skipped)")
+                success_count += 1
+            else:
+                print(f"       ✗ Error: {str(e)[:60]}")
+        
+        except Exception as e:
+            print(f"       ✗ Error: {str(e)[:60]}")
+    
+    cursor.close()
+    
+    print(f"\n{'='*60}")
+    print(f"✓ Database schema initialized!")
+    print(f"  Successfully processed: {success_count}/{len(statements)} statements")
+    print(f"{'='*60}\n")
+
+def create_admin_account(conn):
+    """Create initial admin account."""
+    cursor = conn.cursor()
+    
+    username = "MuseumAdmin"
+    password = "MuseumAdmin123"
+    role = "admin"
+    
+    print("Creating initial admin account...\n")
+    
+    try:
+        # Check if user exists
+        cursor.execute("SELECT AdminID FROM admins WHERE Username = %s", (username,))
+        if cursor.fetchone():
+            print(f"  ⊘ Admin user '{username}' already exists (skipped)\n")
+            cursor.close()
+            return
+        
+        # Create password hash
+        password_hash = generate_password_hash(password)
+        
+        # Insert admin
+        cursor.execute(
+            "INSERT INTO admins (Username, Password_Hash, Role, IsActive) "
+            "VALUES (%s, %s, %s, TRUE)",
+            (username, password_hash, role),
+        )
+        
+        conn.commit()
+        
+        print(f"✓ Created admin account")
+        print(f"  Username: {username}")
+        print(f"  Password: {password}")
+        print(f"  Role: {role}\n")
+        
+    except Exception as e:
+        print(f"✗ Error creating admin: {e}\n")
+    
+    cursor.close()
+
+def main():
+    """Initialize the database and create admin account."""
     database_url = os.environ.get("DATABASE_URL")
     
     if not database_url:
@@ -60,55 +149,20 @@ def init_database():
         sys.exit(1)
     
     try:
-        print("Connecting to PostgreSQL database...")
+        print("Connecting to PostgreSQL database...\n")
         conn = psycopg2.connect(database_url)
-        conn.autocommit = True
-        cursor = conn.cursor()
         
-        # Read the schema file
-        print("Reading schema file...\n")
-        with open("school_museum_schema_postgres.sql", "r") as f:
-            schema_content = f.read()
+        # Initialize schema
+        init_database(conn)
         
-        # Parse statements
-        statements = split_sql_statements(schema_content)
+        # Create admin account
+        create_admin_account(conn)
         
-        # Execute each statement
-        print(f"Executing {len(statements)} SQL statements:\n")
-        success_count = 0
-        
-        for i, statement in enumerate(statements, 1):
-            try:
-                # Truncate long statements for display
-                display_stmt = statement
-                if len(display_stmt) > 70:
-                    display_stmt = display_stmt[:70] + "..."
-                
-                print(f"[{i:2d}/{len(statements)}] {display_stmt}")
-                cursor.execute(statement)
-                print(f"       ✓ Success")
-                success_count += 1
-                
-            except psycopg2.Error as e:
-                error_msg = str(e).lower()
-                # Some statements may fail if they already exist - this is expected
-                if any(x in error_msg for x in ["already exists", "duplicate key", "unique violation", "constraint"]):
-                    print(f"       ⊘ Already exists (skipped)")
-                    success_count += 1
-                else:
-                    print(f"       ✗ Error: {str(e)[:60]}")
-            
-            except Exception as e:
-                print(f"       ✗ Error: {str(e)[:60]}")
-        
-        cursor.close()
         conn.close()
         
-        print(f"\n{'='*60}")
-        print(f"✓ Database initialization complete!")
-        print(f"  Successfully processed: {success_count}/{len(statements)} statements")
-        print(f"{'='*60}")
-        return True
+        print("="*60)
+        print("✓ Database initialization complete!")
+        print("="*60)
         
     except Exception as e:
         print(f"\n✗ Database initialization failed!")
@@ -118,4 +172,4 @@ def init_database():
         sys.exit(1)
 
 if __name__ == "__main__":
-    init_database()
+    main()

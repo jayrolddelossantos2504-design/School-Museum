@@ -5,9 +5,8 @@
 -- Create the first administrator using a secure setup script/CLI command
 -- that hashes the password; never store a plain-text password here.
 
-CREATE DATABASE school_museum;
-
-\c school_museum
+-- Note: Database must already exist (created by Render.com)
+-- This script only creates tables and inserts starter data.
 
 CREATE TABLE IF NOT EXISTS admins (
     AdminID SERIAL PRIMARY KEY,
@@ -56,10 +55,10 @@ CREATE TABLE IF NOT EXISTS museum_items (
         ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE INDEX idx_museum_items_name ON museum_items (Item_Name);
-CREATE INDEX idx_museum_items_category ON museum_items (CategoryID);
-CREATE INDEX idx_museum_items_public ON museum_items (IsPublished, IsArchived);
-CREATE INDEX idx_museum_items_date ON museum_items (Date_Added);
+CREATE INDEX IF NOT EXISTS idx_museum_items_name ON museum_items (Item_Name);
+CREATE INDEX IF NOT EXISTS idx_museum_items_category ON museum_items (CategoryID);
+CREATE INDEX IF NOT EXISTS idx_museum_items_public ON museum_items (IsPublished, IsArchived);
+CREATE INDEX IF NOT EXISTS idx_museum_items_date ON museum_items (Date_Added);
 
 CREATE TABLE IF NOT EXISTS museum_item_images (
     ImageID SERIAL PRIMARY KEY,
@@ -84,8 +83,8 @@ CREATE TABLE IF NOT EXISTS museum_item_images (
         ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE INDEX idx_item_images_item_sort ON museum_item_images (ItemID, Sort_Order);
-CREATE INDEX idx_item_images_cover ON museum_item_images (ItemID, Is_Cover);
+CREATE INDEX IF NOT EXISTS idx_item_images_item_sort ON museum_item_images (ItemID, Sort_Order);
+CREATE INDEX IF NOT EXISTS idx_item_images_cover ON museum_item_images (ItemID, Is_Cover);
 
 CREATE TABLE IF NOT EXISTS activity_logs (
     LogID BIGSERIAL PRIMARY KEY,
@@ -103,9 +102,9 @@ CREATE TABLE IF NOT EXISTS activity_logs (
         ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE INDEX idx_activity_logs_admin ON activity_logs (AdminID);
-CREATE INDEX idx_activity_logs_timestamp ON activity_logs (Timestamp);
-CREATE INDEX idx_activity_logs_entity ON activity_logs (Entity_Type, Entity_ID);
+CREATE INDEX IF NOT EXISTS idx_activity_logs_admin ON activity_logs (AdminID);
+CREATE INDEX IF NOT EXISTS idx_activity_logs_timestamp ON activity_logs (Timestamp);
+CREATE INDEX IF NOT EXISTS idx_activity_logs_entity ON activity_logs (Entity_Type, Entity_ID);
 
 -- Insert starter categories
 INSERT INTO categories (Category_Name, Description) VALUES

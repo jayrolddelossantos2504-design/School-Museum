@@ -194,7 +194,7 @@ def item_detail(token):
             "SELECT Image_URL, Alt_Text, Caption, Is_Cover, Sort_Order "
             "FROM museum_item_images WHERE ItemID = %s "
             "ORDER BY Is_Cover DESC, Sort_Order, ImageID",
-            (item["ItemID"],),
+            (item["itemid"],),
         )
         images = cursor.fetchall()
 
@@ -220,7 +220,7 @@ def item_qr_png(token):
     if row is None:
         abort(404)
 
-    public_url = build_item_url(current_app, row["Public_Token"])
+    public_url = build_item_url(current_app, row["public_token"])
     png = generate_qr_png(public_url)
     return send_file(
         io.BytesIO(png),

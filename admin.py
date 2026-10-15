@@ -118,7 +118,7 @@ def _category_choices():
         )
         rows = cursor.fetchall()
     return [(0, "— Uncategorised —")] + [
-        (r["CategoryID"], r["Category_Name"]) for r in rows
+        (r["categoryid"], r["category_name"]) for r in rows
     ]
 
 
@@ -189,7 +189,7 @@ def item_edit(item_id):
     if form.validate_on_submit():
         category_id = form.category_id.data or None
         # Archived items stay unpublished; Public_Token is never changed.
-        is_published = bool(form.is_published.data) and not item["IsArchived"]
+        is_published = bool(form.is_published.data) and not item["isarchived"]
         with get_cursor(current_app, commit=True) as cursor:
             cursor.execute(
                 "UPDATE museum_items SET "
@@ -216,11 +216,11 @@ def item_edit(item_id):
         return redirect(url_for("admin.items"))
 
     if request.method == "GET":
-        form.name.data = item["Item_Name"]
-        form.description.data = item["Description"]
-        form.historical_details.data = item["Historical_Details"]
-        form.category_id.data = item["CategoryID"] or 0
-        form.is_published.data = bool(item["IsPublished"])
+        form.name.data = item["item_name"]
+        form.description.data = item["description"]
+        form.historical_details.data = item["historical_details"]
+        form.category_id.data = item["categoryid"] or 0
+        form.is_published.data = bool(item["ispublished"])
 
     return render_template("admin_item_form.html", form=form, mode="edit", item=item)
 
@@ -295,10 +295,10 @@ def item_qr_png(item_id):
 @login_required
 def item_publish(item_id):
     item = _get_item_or_404(item_id)
-    if item["IsArchived"]:
+    if item["isarchived"]:
         flash("Archived items cannot be published. Unarchive the item first.", "error")
     else:
-        new_state = not bool(item["IsPublished"])
+        new_state = not bool(item["ispublished"])
         with get_cursor(current_app, commit=True) as cursor:
             cursor.execute(
                 "UPDATE museum_items SET IsPublished = %s, UpdatedBy = %s "
@@ -321,7 +321,7 @@ def item_publish(item_id):
 def item_archive(item_id):
     item = _get_item_or_404(item_id)
     with get_cursor(current_app, commit=True) as cursor:
-        if item["IsArchived"]:
+        if item["isarchived"]:
             cursor.execute(
                 "UPDATE museum_items SET IsArchived = FALSE, UpdatedBy = %s "
                 "WHERE ItemID = %s",
@@ -339,7 +339,7 @@ def item_archive(item_id):
             )
             flash("Item archived and unpublished.", "success")
     log_action(
-        "item_unarchive" if item["IsArchived"] else "item_archive",
+        "item_unarchive" if item["isarchived"] else "item_archive",
         "item",
         item_id,
         f"{'Unarchived' if item['IsArchived'] else 'Archived'} "
@@ -537,7 +537,7 @@ def categories():
             "SELECT CategoryID, COUNT(*) AS c FROM museum_items "
             "WHERE CategoryID IS NOT NULL GROUP BY CategoryID"
         )
-        item_counts = {row["CategoryID"]: row["c"] for row in cursor.fetchall()}
+        item_counts = {row["categoryid"]: row["c"] for row in cursor.fetchall()}
 
     return render_template(
         "admin_categories.html", categories=rows, item_counts=item_counts
@@ -633,8 +633,8 @@ def category_edit(category_id):
                 flash(f"Category '{name}' updated.", "success")
                 return redirect(url_for("admin.categories"))
     elif request.method == "GET":
-        form.name.data = category["Category_Name"]
-        form.description.data = category["Description"]
+        form.name.data = category["category_name"]
+        form.description.data = category["description"]
 
     return render_template(
         "admin_category_form.html", form=form, mode="edit", category=category

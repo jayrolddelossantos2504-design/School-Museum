@@ -16,7 +16,8 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from mysql.connector import IntegrityError
+import psycopg2
+from psycopg2 import IntegrityError
 
 from database import get_cursor
 from forms import CategoryForm, ImageForm, ItemForm
@@ -151,7 +152,8 @@ def item_new():
                 "INSERT INTO museum_items "
                 "(Public_Token, Item_Name, Description, Historical_Details, "
                 " CategoryID, CreatedBy, UpdatedBy, IsPublished, IsArchived) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, FALSE)",
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, FALSE) "
+                "RETURNING ItemID",
                 (
                     token,
                     form.name.data.strip(),
@@ -163,7 +165,7 @@ def item_new():
                     bool(form.is_published.data),
                 ),
             )
-            new_item_id = cursor.lastrowid
+            new_item_id = cursor.fetchone()[0]
         log_action(
             "item_create",
             "item",
@@ -398,7 +400,8 @@ def image_upload(item_id):
                 "INSERT INTO museum_item_images "
                 "(ItemID, Image_URL, Image_Public_ID, Alt_Text, Caption, "
                 " Is_Cover, Sort_Order, UploadedBy) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
+                "RETURNING ImageID",
                 (
                     item_id,
                     secure_url,
@@ -410,7 +413,7 @@ def image_upload(item_id):
                     int(current_user.id),
                 ),
             )
-            new_image_id = cursor.lastrowid
+            new_image_id = cursor.fetchone()[0]
     except Exception as exc:  # noqa: BLE001 - avoid dangling storage asset
         current_app.logger.error("DB insert failed after upload: %s", exc)
         try:
@@ -568,10 +571,11 @@ def category_new():
                 with get_cursor(current_app, commit=True) as cursor:
                     cursor.execute(
                         "INSERT INTO categories (Category_Name, Description) "
-                        "VALUES (%s, %s)",
+                        "VALUES (%s, %s) "
+                        "RETURNING CategoryID",
                         (name, description),
                     )
-                    new_category_id = cursor.lastrowid
+                    new_category_id = cursor.fetchone()[0]
             except IntegrityError:
                 # Unique constraint race — treat the same as a duplicate.
                 flash(f"A category named '{name}' already exists.", "error")

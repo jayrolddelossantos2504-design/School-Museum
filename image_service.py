@@ -1,11 +1,16 @@
-"""Cloudinary image handling.
+"""Image handling with Cloudinary or local file storage fallback.
 
 The Cloudinary SDK is only ever used on the server. API secrets never reach
 templates or the browser. Uploading is isolated in ``upload_image`` so it can
 be replaced in tests without touching the network.
+
+When Cloudinary is not configured, images are stored locally in the /uploads
+directory for development and free-tier deployments.
 """
 
 import os
+import uuid
+from pathlib import Path
 
 import cloudinary
 import cloudinary.uploader
@@ -33,7 +38,16 @@ def configure(app):
 
 
 def is_configured(app):
-    """True only when all three Cloudinary values look set."""
+    """True only when all three Cloudinary values look set.
+    
+    Args:
+        app: Flask app instance, or None to check module-level config.
+    """
+    if app is None:
+        # Check module-level cloudinary config
+        cfg = cloudinary.config()
+        return all([cfg.cloud_name, cfg.api_key, cfg.api_secret])
+    
     return all(
         app.config.get(key) and app.config.get(key) != "replace-me"
         for key in ("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET")
@@ -73,10 +87,25 @@ def validate_image(file_storage):
 
 
 def upload_image(file_storage, folder=IMAGE_FOLDER):
-    """Upload an image to Cloudinary. Returns the SDK result dict.
+    """Upload an image to Cloudinary or local storage.
+    
+    Returns the SDK result dict (for Cloudinary) or a dict mimicking Cloudinary's response:
+    {
+        'public_id': 'path/to/image',
+        'secure_url': '/uploads/filename.jpg',
+        'url': '/uploads/filename.jpg'
+    }
 
     Raises on failure; callers must not write database rows in that case.
     """
+    if is_configured(None):  # Will check module-level cloudinary config
+        return _upload_to_cloudinary(file_storage, folder)
+    else:
+        return _upload_to_local(file_storage)
+
+
+def _upload_to_cloudinary(file_storage, folder):
+    """Upload image to Cloudinary."""
     return cloudinary.uploader.upload(
         file_storage,
         folder=folder,
@@ -84,6 +113,56 @@ def upload_image(file_storage, folder=IMAGE_FOLDER):
     )
 
 
+def _upload_to_local(file_storage):
+    """Upload image to local /uploads directory.
+    
+    Returns a dict mimicking Cloudinary's response format.
+    """
+    uploads_dir = Path("uploads")
+    uploads_dir.mkdir(exist_ok=True)
+    
+    # Generate unique filename
+    file_ext = get_file_extension(file_storage.filename)
+    unique_id = str(uuid.uuid4())[:8]
+    filename = f"{unique_id}.{file_ext}"
+    filepath = uploads_dir / filename
+    
+    # Save file
+    file_storage.seek(0)
+    file_storage.save(str(filepath))
+    
+    # Return Cloudinary-compatible response
+    public_url = f"/uploads/{filename}"
+    return {
+        'public_id': f"uploads/{filename}",
+        'secure_url': public_url,
+        'url': public_url,
+    }
+
+
+def get_file_extension(filename):
+    """Extract and validate file extension."""
+    if not filename or '.' not in filename:
+        return 'jpg'
+    ext = filename.rsplit('.', 1)[1].lower()
+    return ext if ext in ALLOWED_EXTENSIONS else 'jpg'
+
+
 def destroy_image(public_id):
-    """Delete an image from Cloudinary by its public ID."""
-    return cloudinary.uploader.destroy(public_id, resource_type="image")
+    """Delete an image from Cloudinary or local storage.
+    
+    Args:
+        public_id: The Cloudinary public_id or local path like "uploads/uuid.jpg"
+    """
+    if is_configured(None):
+        return cloudinary.uploader.destroy(public_id, resource_type="image")
+    else:
+        # Local storage: public_id is like "uploads/uuid.jpg"
+        try:
+            filepath = Path(public_id)
+            if filepath.exists():
+                filepath.unlink()
+                return {'result': 'ok'}
+        except Exception:
+            pass
+        return {'result': 'not_found'}

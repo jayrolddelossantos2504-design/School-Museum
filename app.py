@@ -12,7 +12,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_from_directory
 
 from admin import admin_bp
 from auth import auth_bp
@@ -57,6 +57,29 @@ def register_routes(app):
 
         return jsonify(status="ok", database="connected")
 
+    @app.route("/uploads/<filename>")
+    def uploaded_file(filename):
+        """Serve uploaded images from local storage.
+        
+        Only serves files from the uploads directory; no path traversal.
+        """
+        # Prevent path traversal attacks
+        if ".." in filename or "/" in filename:
+            return "Not found", 404
+        
+        uploads_dir = os.path.join(os.getcwd(), "uploads")
+        if not os.path.exists(uploads_dir):
+            return "Not found", 404
+        
+        filepath = os.path.join(uploads_dir, filename)
+        if not os.path.abspath(filepath).startswith(os.path.abspath(uploads_dir)):
+            return "Not found", 404
+        
+        if not os.path.exists(filepath):
+            return "Not found", 404
+        
+        return send_from_directory(uploads_dir, filename)
+
 
 def register_template_globals(app):
     @app.context_processor
@@ -90,11 +113,11 @@ def register_error_handlers(app):
 
 # Content Security Policy: tighten what the browser may load/execute.
 # - scripts/styles are same-origin only (no inline JS anywhere)
-# - images may come from this site or Cloudinary
+# - images may come from this site, local uploads, or Cloudinary
 # - the app never embeds frames of other sites
 CSP = (
     "default-src 'self'; "
-    "img-src 'self' data: https://res.cloudinary.com https://*.cloudinary.com; "
+    "img-src 'self' data: /uploads/ https://res.cloudinary.com https://*.cloudinary.com; "
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
     "script-src 'self'; "
     "font-src 'self' https://fonts.gstatic.com; "

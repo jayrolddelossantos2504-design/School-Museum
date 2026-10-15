@@ -135,8 +135,8 @@
       {% for item in featured %}
         <article class="group cursor-pointer bg-white rounded-lg border border-[#e2dacf] overflow-hidden hover:border-[#185a45] hover:shadow-md transition-all duration-300 flex flex-col">
           <!-- Image Container -->
-          <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
-            {% if item.Cover_URL %}
+          <a href="{{ url_for('public.item_detail', token=item.public_token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
+            {% if item.cover_url %}
               <img
                 src="{{ item.cover_url }}"
                 alt="{{ item.cover_alt or item.item_name }}"
@@ -173,7 +173,7 @@
 
             <div class="pt-4 mt-4 border-t border-[#f0eae1] flex items-center justify-between text-[11px] text-stone-500">
               <span class="text-amber-800 font-medium group-hover:underline flex items-center gap-0.5">
-                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}">
+                <a href="{{ url_for('public.item_detail', token=item.public_token) }}">
                   Inspect {{ icons.icon('arrow-right', 'w-3 h-3') }}
                 </a>
               </span>

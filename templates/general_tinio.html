@@ -27,9 +27,9 @@
       <!-- Left Column: Featured Artifact -->
       <div class="lg:col-span-5">
         <div class="bg-stone-900 rounded-lg overflow-hidden border border-[#d6cebe] shadow-md group">
-          {% if tinio_item and tinio_item.Cover_URL %}
+          {% if tinio_item and tinio_item.cover_url %}
             <img
-              src="{{ tinio_item.Cover_URL }}"
+              src="{{ tinio_item.cover_url }}"
               alt="Memorabilia of General Manuel Tinio"
               class="w-full h-[380px] object-cover group-hover:scale-105 transition-transform duration-500"
             />
@@ -57,7 +57,7 @@
               {% endif %}
             </p>
             {% if tinio_item %}
-              <a href="{{ url_for('public.item_detail', token=tinio_item.Public_Token) }}"
+              <a href="{{ url_for('public.item_detail', token=tinio_item.public_token) }}"
                  class="block w-full py-2 px-3 text-xs font-semibold uppercase tracking-wider text-center text-stone-950 bg-amber-400 hover:bg-amber-300 rounded transition-colors">
                 View Archival Accession & QR Guide
               </a>

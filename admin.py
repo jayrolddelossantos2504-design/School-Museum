@@ -16,8 +16,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-import psycopg2
-from psycopg2 import IntegrityError
+from mysql.connector import IntegrityError
 
 from database import get_cursor
 from forms import CategoryForm, ImageForm, ItemForm
@@ -118,7 +117,7 @@ def _category_choices():
         )
         rows = cursor.fetchall()
     return [(0, "— Uncategorised —")] + [
-        (r["categoryid"], r["category_name"]) for r in rows
+        (r["CategoryID"], r["Category_Name"]) for r in rows
     ]
 
 
@@ -152,8 +151,7 @@ def item_new():
                 "INSERT INTO museum_items "
                 "(Public_Token, Item_Name, Description, Historical_Details, "
                 " CategoryID, CreatedBy, UpdatedBy, IsPublished, IsArchived) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, FALSE) "
-                "RETURNING ItemID",
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, FALSE)",
                 (
                     token,
                     form.name.data.strip(),
@@ -165,7 +163,7 @@ def item_new():
                     bool(form.is_published.data),
                 ),
             )
-            new_item_id = cursor.fetchone()[0]
+            new_item_id = cursor.lastrowid
         log_action(
             "item_create",
             "item",
@@ -189,7 +187,7 @@ def item_edit(item_id):
     if form.validate_on_submit():
         category_id = form.category_id.data or None
         # Archived items stay unpublished; Public_Token is never changed.
-        is_published = bool(form.is_published.data) and not item["isarchived"]
+        is_published = bool(form.is_published.data) and not item["IsArchived"]
         with get_cursor(current_app, commit=True) as cursor:
             cursor.execute(
                 "UPDATE museum_items SET "
@@ -216,11 +214,11 @@ def item_edit(item_id):
         return redirect(url_for("admin.items"))
 
     if request.method == "GET":
-        form.name.data = item["item_name"]
-        form.description.data = item["description"]
-        form.historical_details.data = item["historical_details"]
-        form.category_id.data = item["categoryid"] or 0
-        form.is_published.data = bool(item["ispublished"])
+        form.name.data = item["Item_Name"]
+        form.description.data = item["Description"]
+        form.historical_details.data = item["Historical_Details"]
+        form.category_id.data = item["CategoryID"] or 0
+        form.is_published.data = bool(item["IsPublished"])
 
     return render_template("admin_item_form.html", form=form, mode="edit", item=item)
 
@@ -287,7 +285,7 @@ def item_qr_png(item_id):
         io.BytesIO(png),
         mimetype="image/png",
         as_attachment=as_attachment,
-        download_name=f"qr-{item['public_token']}.png",
+        download_name=f"qr-{item['Public_Token']}.png",
     )
 
 
@@ -295,10 +293,10 @@ def item_qr_png(item_id):
 @login_required
 def item_publish(item_id):
     item = _get_item_or_404(item_id)
-    if item["isarchived"]:
+    if item["IsArchived"]:
         flash("Archived items cannot be published. Unarchive the item first.", "error")
     else:
-        new_state = not bool(item["ispublished"])
+        new_state = not bool(item["IsPublished"])
         with get_cursor(current_app, commit=True) as cursor:
             cursor.execute(
                 "UPDATE museum_items SET IsPublished = %s, UpdatedBy = %s "
@@ -310,7 +308,7 @@ def item_publish(item_id):
             "item",
             item_id,
             f"{'Published' if new_state else 'Unpublished'} "
-            f"item '{item['item_name']}'",
+            f"item '{item['Item_Name']}'",
         )
         flash("Item published." if new_state else "Item unpublished.", "success")
     return redirect(url_for("admin.items"))
@@ -321,7 +319,7 @@ def item_publish(item_id):
 def item_archive(item_id):
     item = _get_item_or_404(item_id)
     with get_cursor(current_app, commit=True) as cursor:
-        if item["isarchived"]:
+        if item["IsArchived"]:
             cursor.execute(
                 "UPDATE museum_items SET IsArchived = FALSE, UpdatedBy = %s "
                 "WHERE ItemID = %s",
@@ -339,11 +337,11 @@ def item_archive(item_id):
             )
             flash("Item archived and unpublished.", "success")
     log_action(
-        "item_unarchive" if item["isarchived"] else "item_archive",
+        "item_unarchive" if item["IsArchived"] else "item_archive",
         "item",
         item_id,
-        f"{'Unarchived' if item['isarchived'] else 'Archived'} "
-        f"item '{item['item_name']}'",
+        f"{'Unarchived' if item['IsArchived'] else 'Archived'} "
+        f"item '{item['Item_Name']}'",
     )
     return redirect(url_for("admin.items"))
 
@@ -400,8 +398,7 @@ def image_upload(item_id):
                 "INSERT INTO museum_item_images "
                 "(ItemID, Image_URL, Image_Public_ID, Alt_Text, Caption, "
                 " Is_Cover, Sort_Order, UploadedBy) "
-                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s) "
-                "RETURNING ImageID",
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                 (
                     item_id,
                     secure_url,
@@ -413,7 +410,7 @@ def image_upload(item_id):
                     int(current_user.id),
                 ),
             )
-            new_image_id = cursor.fetchone()[0]
+            new_image_id = cursor.lastrowid
     except Exception as exc:  # noqa: BLE001 - avoid dangling storage asset
         current_app.logger.error("DB insert failed after upload: %s", exc)
         try:
@@ -427,7 +424,7 @@ def image_upload(item_id):
         "image_upload",
         "item_image",
         new_image_id,
-        f"Uploaded image for item '{item['item_name']}'"
+        f"Uploaded image for item '{item['Item_Name']}'"
         + (" (set as cover)" if is_cover else ""),
     )
     flash("Image uploaded.", "success")
@@ -537,7 +534,7 @@ def categories():
             "SELECT CategoryID, COUNT(*) AS c FROM museum_items "
             "WHERE CategoryID IS NOT NULL GROUP BY CategoryID"
         )
-        item_counts = {row["categoryid"]: row["c"] for row in cursor.fetchall()}
+        item_counts = {row["CategoryID"]: row["c"] for row in cursor.fetchall()}
 
     return render_template(
         "admin_categories.html", categories=rows, item_counts=item_counts
@@ -571,11 +568,10 @@ def category_new():
                 with get_cursor(current_app, commit=True) as cursor:
                     cursor.execute(
                         "INSERT INTO categories (Category_Name, Description) "
-                        "VALUES (%s, %s) "
-                        "RETURNING CategoryID",
+                        "VALUES (%s, %s)",
                         (name, description),
                     )
-                    new_category_id = cursor.fetchone()[0]
+                    new_category_id = cursor.lastrowid
             except IntegrityError:
                 # Unique constraint race — treat the same as a duplicate.
                 flash(f"A category named '{name}' already exists.", "error")
@@ -633,8 +629,8 @@ def category_edit(category_id):
                 flash(f"Category '{name}' updated.", "success")
                 return redirect(url_for("admin.categories"))
     elif request.method == "GET":
-        form.name.data = category["category_name"]
-        form.description.data = category["description"]
+        form.name.data = category["Category_Name"]
+        form.description.data = category["Description"]
 
     return render_template(
         "admin_category_form.html", form=form, mode="edit", category=category
@@ -660,7 +656,7 @@ def category_delete(category_id):
 
     if items_in_use:
         flash(
-            f"Cannot delete '{category['category_name']}': "
+            f"Cannot delete '{category['Category_Name']}': "
             f"{items_in_use} item(s) still use this category. "
             "Reassign those items first.",
             "error",
@@ -674,9 +670,9 @@ def category_delete(category_id):
         "category_delete",
         "category",
         category_id,
-        f"Deleted category '{category['category_name']}'",
+        f"Deleted category '{category['Category_Name']}'",
     )
-    flash(f"Category '{category['category_name']}' deleted.", "success")
+    flash(f"Category '{category['Category_Name']}' deleted.", "success")
     return redirect(url_for("admin.categories"))
 
 

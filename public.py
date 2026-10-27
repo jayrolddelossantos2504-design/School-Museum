@@ -167,8 +167,14 @@ def general_tinio():
 
 @public_bp.route("/visitor-guide")
 def visitor_guide():
-    """Practical visit information, gallery directory, and QR how-to."""
+    """Public visitor guide page with hours, location, and tips."""
     return render_template("visitor_guide.html")
+
+
+@public_bp.route("/principals")
+def principals():
+    """Public page showcasing GTNHS principals."""
+    return render_template("principals.html")
 
 
 @public_bp.route("/item/<token>")
@@ -194,7 +200,7 @@ def item_detail(token):
             "SELECT Image_URL, Alt_Text, Caption, Is_Cover, Sort_Order "
             "FROM museum_item_images WHERE ItemID = %s "
             "ORDER BY Is_Cover DESC, Sort_Order, ImageID",
-            (item["itemid"],),
+            (item["ItemID"],),
         )
         images = cursor.fetchall()
 
@@ -220,10 +226,10 @@ def item_qr_png(token):
     if row is None:
         abort(404)
 
-    public_url = build_item_url(current_app, row["public_token"])
+    public_url = build_item_url(current_app, row["Public_Token"])
     png = generate_qr_png(public_url)
     return send_file(
         io.BytesIO(png),
         mimetype="image/png",
-        download_name=f"qr-{row['public_token']}.png",
+        download_name=f"qr-{row['Public_Token']}.png",
     )

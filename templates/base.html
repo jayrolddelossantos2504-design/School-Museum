@@ -20,9 +20,7 @@
       <div class="flex items-center justify-between gap-8 h-20">
         <!-- Brand -->
         <a href="{{ url_for('public.index') }}" class="group flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-sm">
-          <div class="w-10 h-10 rounded-full bg-[#185a45] border border-amber-400/40 flex items-center justify-center text-amber-300 shadow-inner shrink-0 group-hover:border-amber-400 transition-colors">
-            {{ icons.icon('landmark', 'w-5 h-5 text-amber-300') }}
-          </div>
+          <img src="{{ url_for('static', filename='images/GTNHS LOGO.jpg') }}" alt="GTNHS Museum Logo" class="w-10 h-10 rounded-full object-cover border border-amber-400/40 shrink-0 group-hover:border-amber-400 transition-colors">
           <div class="flex flex-col">
             <span class="font-institutional text-base sm:text-lg font-bold tracking-wider text-amber-200 uppercase whitespace-nowrap shrink-0 group-hover:text-amber-100 transition-colors">
               General Tinio National High School
@@ -46,6 +44,10 @@
           <a href="{{ url_for('public.general_tinio') }}"
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.general_tinio' else 'text-stone-200' }}">
             General Tinio Legacy
+          </a>
+          <a href="{{ url_for('public.principals') }}"
+             class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.principals' else 'text-stone-200' }}">
+            Principals
           </a>
           <a href="{{ url_for('public.visitor_guide') }}"
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.visitor_guide' else 'text-stone-200' }}">
@@ -77,6 +79,7 @@
         <a href="{{ url_for('public.index') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Home</a>
         <a href="{{ url_for('public.collection') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Collection</a>
         <a href="{{ url_for('public.general_tinio') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">General Tinio Legacy</a>
+        <a href="{{ url_for('public.principals') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Principals</a>
         <a href="{{ url_for('public.visitor_guide') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Visitor Guide</a>
         {% if current_user.is_authenticated %}
           <a href="{{ url_for('admin.dashboard') }}" class="block px-3 py-2 text-sm font-medium text-amber-300 hover:bg-[#185a45] rounded">Staff Console</a>
@@ -136,9 +139,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
         <div>
           <div class="flex items-center gap-2 mb-3">
-            <div class="w-8 h-8 rounded-full bg-[#185a45] border border-amber-400/40 flex items-center justify-center text-amber-300">
-              {{ icons.icon('landmark', 'w-4 h-4') }}
-            </div>
+            <img src="{{ url_for('static', filename='images/GTNHS LOGO.jpg') }}" alt="GTNHS Museum Logo" class="w-8 h-8 rounded-full object-cover border border-amber-400/40">
             <span class="font-institutional text-amber-200 font-bold text-sm">GTNHS Museum</span>
           </div>
           <p class="text-sm text-stone-400 leading-relaxed">

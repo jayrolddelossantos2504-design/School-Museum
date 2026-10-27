@@ -85,32 +85,6 @@
       </div>
     </div>
 
-    <!-- KPI Strip -->
-    <div class="mt-14 pt-8 border-t border-[#e2dacf] grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="space-y-1">
-        <p class="text-xs uppercase tracking-wider text-stone-500 font-medium">Institution Founded</p>
-        <p class="font-serif text-2xl sm:text-3xl font-bold text-[#0c3125] tabular-nums">1966</p>
-        <p class="text-xs text-stone-600">Established in General Tinio, Nueva Ecija</p>
-      </div>
-
-      <div class="space-y-1">
-        <p class="text-xs uppercase tracking-wider text-stone-500 font-medium">Archival Holdings</p>
-        <p class="font-serif text-2xl sm:text-3xl font-bold text-[#0c3125] tabular-nums">{{ stats.items }}+</p>
-        <p class="text-xs text-stone-600">Physical relics, photos, and legal folios</p>
-      </div>
-
-      <div class="space-y-1">
-        <p class="text-xs uppercase tracking-wider text-stone-500 font-medium">Permanent Galleries</p>
-        <p class="font-serif text-2xl sm:text-3xl font-bold text-[#0c3125] tabular-nums">{{ stats.categories }} Wings</p>
-        <p class="text-xs text-stone-600">Artifacts, Photos, Documents, Memorabilia</p>
-      </div>
-
-      <div class="space-y-1">
-        <p class="text-xs uppercase tracking-wider text-stone-500 font-medium">QR Exhibit Guides</p>
-        <p class="font-serif text-2xl sm:text-3xl font-bold text-[#0c3125] tabular-nums">100%</p>
-        <p class="text-xs text-stone-600">Direct mobile smartphone access</p>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -135,11 +109,11 @@
       {% for item in featured %}
         <article class="group cursor-pointer bg-white rounded-lg border border-[#e2dacf] overflow-hidden hover:border-[#185a45] hover:shadow-md transition-all duration-300 flex flex-col">
           <!-- Image Container -->
-          <a href="{{ url_for('public.item_detail', token=item.public_token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
-            {% if item.cover_url %}
+          <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}" class="relative aspect-[4/3] bg-stone-100 overflow-hidden">
+            {% if item.Cover_URL %}
               <img
-                src="{{ item.cover_url }}"
-                alt="{{ item.cover_alt or item.item_name }}"
+                src="{{ item.Cover_URL }}"
+                alt="{{ item.Cover_Alt or item.Item_Name }}"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 loading="lazy"
               />
@@ -159,11 +133,11 @@
           <div class="p-5 flex-1 flex flex-col justify-between">
             <div class="space-y-2">
               <div class="flex items-center gap-2 text-xs text-stone-500 font-sans">
-                <span class="font-semibold text-[#185a45]">{{ item.category_name or 'General Exhibit' }}</span>
+                <span class="font-semibold text-[#185a45]">{{ item.Category_Name or 'General Exhibit' }}</span>
               </div>
 
               <h3 class="font-serif text-lg font-bold text-stone-900 group-hover:text-[#114232] transition-colors leading-snug">
-                <a href="{{ url_for('public.item_detail', token=item.public_token) }}">{{ item.item_name }}</a>
+                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}">{{ item.Item_Name }}</a>
               </h3>
 
               <p class="text-xs text-stone-600 line-clamp-2 leading-relaxed">
@@ -173,7 +147,7 @@
 
             <div class="pt-4 mt-4 border-t border-[#f0eae1] flex items-center justify-between text-[11px] text-stone-500">
               <span class="text-amber-800 font-medium group-hover:underline flex items-center gap-0.5">
-                <a href="{{ url_for('public.item_detail', token=item.public_token) }}">
+                <a href="{{ url_for('public.item_detail', token=item.Public_Token) }}">
                   Inspect {{ icons.icon('arrow-right', 'w-3 h-3') }}
                 </a>
               </span>

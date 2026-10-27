@@ -194,13 +194,8 @@ def create_app(config_class=Config):
     return app
 
 
-# Create app instance for gunicorn (production)
-from config import get_config
-app = create_app(get_config())
-
-
 if __name__ == "__main__":
     from config import DevelopmentConfig
 
     app = create_app(DevelopmentConfig)
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)

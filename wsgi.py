@@ -29,8 +29,8 @@ app = create_app(get_config())
 
 
 if __name__ == "__main__":
-    host = os.environ.get("HOST", "0.0.0.0")
-    port = int(os.environ.get("PORT", "8000"))
+    host = os.environ.get("HOST", "127.0.0.1")
+    port = int(os.environ.get("PORT", "3000"))
     threads = int(os.environ.get("WAITRESS_THREADS", "4"))
 
     app.logger.info("Starting Waitress on %s:%s (APP_ENV=%s)", host, port,

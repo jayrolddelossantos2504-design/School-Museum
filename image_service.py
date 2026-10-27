@@ -65,7 +65,7 @@ def is_configured(app):
     
     # Check Flask app config
     try:
-        placeholder_values = {'museum', 'replace-me', '144449628473789', ''}
+        placeholder_values = {'replace-me', '144449628473789', ''}
         
         for key in ("CLOUDINARY_CLOUD_NAME", "CLOUDINARY_API_KEY", "CLOUDINARY_API_SECRET"):
             val = app.config.get(key, '')

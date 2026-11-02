@@ -171,6 +171,18 @@ def visitor_guide():
     return render_template("visitor_guide.html")
 
 
+@public_bp.route("/location")
+def location():
+    """Public page showing the museum's location and how to get there."""
+    return render_template("location.html")
+
+
+@public_bp.route("/school-history")
+def school_history():
+    """Public page telling the history of General Tinio National High School."""
+    return render_template("school_history.html")
+
+
 @public_bp.route("/principals")
 def principals():
     """Public page showcasing GTNHS principals."""

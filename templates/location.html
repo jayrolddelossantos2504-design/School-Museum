@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}Location — General Tinio NHS Heritage Museum{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-b from-[#0c3125] to-[#145a44] text-white py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p class="text-xs font-sans uppercase tracking-widest text-amber-300 font-semibold mb-2">
+      Visit the Museum
+    </p>
+    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">Location</h1>
+    <p class="mt-3 text-emerald-100/90 text-lg max-w-2xl mx-auto">
+      Find the Heritage Museum on the main campus of General Tinio National High School.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-10">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-lg border-t-4 border-[#185a45] border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-[#185a45]">
+        {{ icons.icon('pin', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Address</span>
+      </div>
+      <h2 class="font-serif text-xl font-bold text-stone-900">Heritage Hall, Main Campus</h2>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        General Tinio National High School, General Tinio, Nueva Ecija, Philippines.
+        The gallery is on the ground floor, beside the main administration building.
+      </p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border-t-4 border-amber-500 border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-amber-600">
+        {{ icons.icon('clock', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Visiting Hours</span>
+      </div>
+      <h2 class="font-serif text-xl font-bold text-stone-900">Monday to Friday</h2>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        08:00 – 16:00. Last entry at 15:30. The museum follows the official school
+        calendar and is closed on weekends and public holidays.
+      </p>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg border-t-4 border-[#185a45] border-x border-b border-[#e2dacf] space-y-3">
+      <div class="flex items-center gap-2 text-[#185a45]">
+        {{ icons.icon('ticket', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Admission</span>
+      </div>
+      <h2 class="font-serif text-xl font-bold text-stone-900">Free for Everyone</h2>
+      <p class="text-sm text-stone-600 leading-relaxed">
+        Learners, staff, alumni, and guests are welcome at no cost. Group visits
+        and guided tours can be arranged in advance.
+      </p>
+    </div>
+  </div>
+
+  <div class="bg-[#f4efe6] rounded-xl border border-[#e2dacf] p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+    <div class="lg:col-span-2 space-y-4">
+      <h2 class="font-serif text-2xl font-bold text-[#0c3125]">Getting Here</h2>
+      <p class="text-stone-700 leading-relaxed">
+        Enter through the main gate of General Tinio National High School and follow
+        the museum signs toward Heritage Hall. Visitors arriving by private vehicle may
+        use the designated drop-off area near the administration building.
+      </p>
+      <p class="text-stone-600 text-sm leading-relaxed">
+        For guided group visits, please coordinate with the Heritage Committee ahead of
+        your arrival so a docent can meet your group at the entrance.
+      </p>
+      <a href="https://www.google.com/maps/search/General+Tinio+National+High+School+Nueva+Ecija"
+         target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-[#185a45] hover:bg-[#114232] rounded transition-colors">
+        {{ icons.icon('compass', 'w-4 h-4') }}
+        <span>Open in Google Maps</span>
+      </a>
+    </div>
+
+    <div class="bg-[#0c3125] text-stone-100 rounded-lg p-6 border border-[#1b4d3c] space-y-3">
+      <div class="flex items-center gap-2 text-amber-300">
+        {{ icons.icon('pin', 'w-5 h-5') }}
+        <span class="text-xs uppercase tracking-wider font-semibold">Campus Landmark</span>
+      </div>
+      <p class="font-serif text-lg font-bold text-white">Heritage Hall</p>
+      <p class="text-sm text-emerald-100/80 leading-relaxed">
+        Ground floor, beside the main administration building. Look for the museum
+        marker and the entrance beside the covered walkway.
+      </p>
+    </div>
+  </div>
+</section>
+{% endblock %}

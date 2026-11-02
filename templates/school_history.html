@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+{% import "_icons.html" as icons %}
+
+{% block title %}School History — General Tinio NHS Heritage Museum{% endblock %}
+
+{% block content %}
+<section class="bg-gradient-to-b from-[#0c3125] to-[#145a44] text-white py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p class="text-xs font-sans uppercase tracking-widest text-amber-300 font-semibold mb-2">
+      Our Story
+    </p>
+    <h1 class="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+      History of General Tinio National High School
+    </h1>
+    <p class="mt-3 text-emerald-100/90 text-lg max-w-2xl mx-auto">
+      From a rented private house in 1946 to one of the biggest schools in Nueva Ecija.
+    </p>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <div class="lg:col-span-2 space-y-5 text-stone-700 leading-relaxed">
+      <p class="first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-[#0c3125]">
+        The General Tinio National High School of Nueva Ecija is one, if not the biggest,
+        school in the province. Formerly known as Papaya Provincial High School, it was
+        established in 1946 through the efforts of Schools Division Superintendent
+        Mr. Cenon Monasterial Sr., the Parent Teacher Association, Mayor Getulio Bote Sr.,
+        and other civic leaders of the town.
+      </p>
+      <p>
+        Newborn as it was, the Papaya Provincial High School had a population of 90 students.
+        There were only two year levels — first and second year — with one section each.
+        Since the school started from nothing, classes were held in private houses rented
+        by the school. From these humble beginnings, the school grew into a complete high
+        school, was renamed, nationalized, and expanded into the modern campus it is today.
+      </p>
+    </div>
+
+    <aside class="space-y-4">
+      <div class="bg-[#f4efe6] rounded-xl border border-[#e2dacf] p-6 space-y-2">
+        <div class="flex items-center gap-2 text-[#185a45]">
+          {{ icons.icon('sparkles', 'w-5 h-5') }}
+          <span class="text-xs uppercase tracking-wider font-semibold">At a Glance</span>
+        </div>
+        <p class="font-serif text-3xl font-bold text-[#0c3125]">Est. 1946</p>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          Founded as <span class="font-semibold">Papaya Provincial High School</span>,
+          renamed <span class="font-semibold">General Tinio High School</span> on
+          August 19, 1957, and nationalized in 1983.
+        </p>
+      </div>
+      <div class="bg-[#0c3125] text-stone-100 rounded-xl border border-[#1b4d3c] p-6 space-y-2">
+        <div class="flex items-center gap-2 text-amber-300">
+          {{ icons.icon('users', 'w-5 h-5') }}
+          <span class="text-xs uppercase tracking-wider font-semibold">Growth</span>
+        </div>
+        <p class="text-sm text-emerald-100/80 leading-relaxed">
+          From <span class="font-semibold text-white">90 students</span> in 1946 to
+          <span class="font-semibold text-white">2,099 students</span>, with
+          <span class="font-semibold text-white">80 teachers</span> (including eight
+          department heads) and 25 non-teaching staff.
+        </p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="bg-white rounded-xl border border-[#e2dacf] p-6 sm:p-8">
+    <h2 class="font-serif text-2xl font-bold text-[#0c3125] mb-2">Historical Timeline</h2>
+    <p class="text-sm text-stone-500 mb-8">Milestones and school heads through the years.</p>
+
+    <ol class="relative border-l-2 border-[#d6cebe] ml-3 space-y-10">
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">1946 · Founding</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Papaya Provincial High School</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          The school was established with 90 students in the first and second year, one
+          section each, holding classes in rented private houses. In 1946–1947, its first
+          officer-in-charge was Porfirio Yuson.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">1947–1952 · Growth</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mr. Pedro Magno</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          Mr. Pedro Magno was assigned principal. Through the effort of the PTA members and
+          its president Mr. Diosdado Bote, the school acquired 10 hectares of land; the deed
+          of donation was signed by Mayor Gerardo Rivera.
+        </p>
+        <p class="text-sm text-stone-600 leading-relaxed mt-2">
+          In 1947–1948, the school became a complete high school with classes from first to
+          fourth year. Classes moved from private houses into a six-room Gabaldon building
+          financed and built through the joint efforts of Ex-Mayor Getulio Bote Sr., the PTA,
+          and civic-minded citizens. The first commencement exercises produced 31 graduates.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">1952–1957 · A New Name</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Ms. Rosario B. Mangulabnan</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          Ms. Rosario B. Mangulabnan took over as administrator. During her time, Papaya
+          Provincial High School was changed to General Tinio High School on August 19, 1957.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">1962 · Academic Excellence</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Ranked First in Nueva Ecija</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          The school placed first among the twelve public high schools in Nueva Ecija in the
+          1962 national examination for seniors. It also placed seventh in Filipino IV with a
+          rating of 87.7, credited in part to Ms. Sabina B. Mangulabnan, who was both principal
+          and a Filipino teacher at the time.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">1983–1984 · Nationalization</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Batas Pambansa Blg. 507</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          By virtue of Batas Pambansa Blg. 507, signed by former President Ferdinand E. Marcos
+          on June 10, 1983, the school was nationalized, though full operation as a national
+          school began in March 1984. The bill was sponsored by Assemblyman Narcisio S. Nario.
+          Nationalization brought favorable growth in facilities and improvements compared to
+          the earlier years of financial difficulty.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">1991–1998</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mr. Alfredo I. Bartolome</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          Mr. Alfredo I. Bartolome, who hailed from Muñoz, Nueva Ecija, took over the school.
+          Under his leadership, General Tinio National High School showed not only a remarkable
+          face-lift but also outstanding academic performance.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">1999 · Expansion</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mr. Antonio D. Gante</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On July 1, 1999, Mr. Antonio D. Gante — an alumnus of the institution and a resident
+          of Rio Chico, General Tinio — assumed office. He renewed and re-strengthened the
+          school's mission and vision toward the total development of students and the
+          professional growth of teachers. He spearheaded facility improvements, made students
+          academically competitive, and encouraged teachers to pursue graduate studies and
+          attend seminars and conferences.
+        </p>
+        <p class="text-sm text-stone-600 leading-relaxed mt-2">
+          The school gained two spacious halls (the Sotto Hall and the Multi-Purpose Hall) and
+          an adequate library. The thirty-five classrooms before became forty-five with the
+          construction of the Villareal Building and the eight-room JICA building, courtesy of
+          the Japanese government.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">2007 · 21st Century Leadership</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Dr. Nicanor R. Ventura</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On September 13, 2007, Dr. Nicanor R. Ventura, who hailed from Cabiao, Nueva Ecija,
+          became principal. The school acquired 20 computer units, 30 units of speech
+          laboratory with complete onboard table, DVD player, cassette tape recorder, a
+          projector, white screen, and all the needed peripherals. The school was unanimously
+          chosen as CD IV's representative as Best School Implementer of the School-Based
+          Management (SBM) Program of the Department of Education, and it also opened Special
+          Science Class sections.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">2009 · Service to Students</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Dr. Eladio R. Santiago</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On January 26, 2009, Dr. Eladio R. Santiago — a native of Muñoz who resided in
+          Bongabon, Nueva Ecija — became principal. His commitment and dedication earned him
+          recognition as the most outstanding principal in the Division of Nueva Ecija. He
+          introduced the "Adopt a Student Program," believed to be the first of its kind in the
+          country, to answer the burden of miscellaneous fees on parents with support from
+          alumni.
+        </p>
+        <p class="text-sm text-stone-600 leading-relaxed mt-2">
+          His efforts brought a new speech laboratory that also serves as an audio-visual room,
+          more computer units donated by alumni and the Department of Trade and Industry (DTI),
+          a six-classroom building, repair of the SUPRA stage, installation of water supply with
+          aid from the LGU, a Science Laboratory, and a functional water system donated by alumni.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">2013–2014 · Facilities</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Buildings and a Gymnasium</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          In school year 2013–2014, the school received 50 additional sets of computers from
+          DepEd and acquired 14 new teachers. It was also blessed with a two-classroom building
+          used as a model home for TLE, donated by the Local Government Unit; a two-storey
+          building with 18 classrooms donated through Public-Private Partnership (PPP); and a
+          multi-purpose gymnasium donated by the Provincial Government. The "Dream Come True"
+          multi-purpose gymnasium, located parallel to the PPP building, materialized in 2013.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">2014 · Total Make-Over</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mrs. Josephine S. Martinez</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          In May 2014, Mrs. Josephine S. Martinez, a native of Barangay Bago, General Tinio,
+          and fresh from San Mariano National High School, became School Principal IV. The
+          school underwent a "total make-over": idle lands were converted into different areas
+          of assignment; a gymnasium (covered court) was donated by 1-SAGIP Party List
+          Representative Erlinda M. Santiago; and a cemented pathway from the eastern gate to
+          the school gym was built through the effort of Mayor Virgilio A. Bote and the General
+          Tinio LGU.
+        </p>
+        <p class="text-sm text-stone-600 leading-relaxed mt-2">
+          In July 2015, a steel gate was constructed on the eastern side, replacing the old and
+          dilapidated gate. Beside the new senior high school gym rose two consecutive two-storey
+          six-classroom buildings donated by the Provincial Government under Aurelio M. Umali.
+          The Non-Teaching Center, Park, and Guard House were built between the Sotto Hall and
+          the PPP Building, and on April 18, 2016 the Walking Shed "Adopt-a-Post" Project was
+          started with a donation from Batch '86.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">2016 · Change Has Come</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Dr. Cecilio M. Tulaban</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On June 10, 2016, Dr. Cecilio M. Tulaban was installed as School Principal IV. A
+          native of Mambangnan, San Leonardo, Nueva Ecija, he is described as simple,
+          considerate, strict, and firm in his decisions, and supportive of school events
+          involving students. Within his first year he initiated the construction of the school
+          quadrangle, which became a venue for school activities and the Papaya Festival
+          Centennial Celebration Street Dance Competition, with the support of Mayor Engr.
+          Ferdinand P. Bote. He also put up fences around the school quadrangle and initiated
+          the construction of school fences to secure the perimeter and premises.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-[#185a45] border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">2018 · Strategic Direction</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mrs. Miriam S. Monteroso</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On September 2, 2018, Mrs. Miriam S. Monteroso assumed the principalship. A diligent
+          school head, she provided strategic direction toward quality education. Within ten
+          months, GTNHS emerged as champion in Brigada Eskwela for the Mega School Category in
+          Congressional District IV and third runner-up in the Division. A three-time
+          Natatanging Lingkod Awardee — the highest award in DepEd Nueva Ecija — she accomplished
+          much in physical and academic aspects during her two-year stay.
+        </p>
+      </li>
+
+      <li class="ml-6">
+        <span class="absolute -left-[9px] w-4 h-4 rounded-full bg-amber-500 border-2 border-white"></span>
+        <p class="text-xs uppercase tracking-widest text-amber-700 font-semibold">2020 · A Premier School</p>
+        <h3 class="font-serif text-lg font-bold text-stone-900">Mrs. Adora B. Dela Cruz</h3>
+        <p class="text-sm text-stone-600 leading-relaxed">
+          On July 6, 2020, Mrs. Adora B. Dela Cruz, another Natatanging Lingkod Hall of Famer,
+          assumed the headship of GTNHS. Under her leadership, the school became an awardee in
+          DepEd Matatag School Implementer, a prestigious honor achieved through a strong
+          partnership with Brigada Eskwela from 2021 to 2024. The school also emerged as
+          champion in the Division Learning Expo 2025, showcasing its commitment to innovative
+          teaching and learning strategies.
+        </p>
+        <p class="text-sm text-stone-600 leading-relaxed mt-2">
+          She created a strong mechanism of supervision, monitoring, and evaluation, and the
+          school facilities gained improvements: the principal's office and school parks were
+          enhanced, comfort rooms were rehabilitated, the Junior and Senior High School gyms
+          were renovated, and the Sotto Hall was fully rehabilitated and air-conditioned. With
+          these, the school continues to look forward to greater things in the years to come.
+        </p>
+      </li>
+    </ol>
+  </div>
+
+  <div class="bg-[#f4efe6] rounded-xl border border-[#e2dacf] p-6 sm:p-8 text-center space-y-2">
+    <p class="text-xs uppercase tracking-widest text-[#185a45] font-semibold">Continuing Legacy</p>
+    <p class="text-stone-700 leading-relaxed max-w-3xl mx-auto">
+      From 90 students and rented private houses in 1946, General Tinio National High School
+      has grown into one of the biggest schools in Nueva Ecija. Its story is one of community
+      effort, academic excellence, and steady progress — a legacy the Heritage Museum and
+      Digital Archive exists to preserve.
+    </p>
+  </div>
+</section>
+{% endblock %}

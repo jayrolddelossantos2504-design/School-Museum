@@ -17,7 +17,7 @@
   <!-- Navbar -->
   <header class="sticky top-0 z-40 bg-[#0c3125] text-stone-100 border-b border-[#1b4d3c] shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between gap-8 h-20">
+      <div class="flex items-center justify-between gap-8 py-4">
         <!-- Brand -->
         <a href="{{ url_for('public.index') }}" class="group flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-sm">
           <img src="{{ url_for('static', filename='images/GTNHS LOGO.jpg') }}" alt="GTNHS Museum Logo" class="w-10 h-10 rounded-full object-cover border border-amber-400/40 shrink-0 group-hover:border-amber-400 transition-colors">
@@ -31,8 +31,14 @@
           </div>
         </a>
 
-        <!-- Nav Links -->
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-stone-300 hover:text-white hover:bg-[#185a45] rounded transition-colors" aria-label="Toggle navigation">
+          {{ icons.icon('menu', 'w-6 h-6') }}
+        </button>
+      </div>
+
+      <!-- Nav Links (below the brand) -->
+      <nav class="hidden md:flex flex-wrap items-center justify-center gap-6 xl:gap-10 text-sm font-medium py-4 border-t border-[#1b4d3c]">
           <a href="{{ url_for('public.index') }}"
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.index' else 'text-stone-200' }}">
             Home
@@ -45,9 +51,17 @@
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.general_tinio' else 'text-stone-200' }}">
             General Tinio Legacy
           </a>
+          <a href="{{ url_for('public.school_history') }}"
+             class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.school_history' else 'text-stone-200' }}">
+            School History
+          </a>
           <a href="{{ url_for('public.principals') }}"
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.principals' else 'text-stone-200' }}">
             Principals
+          </a>
+          <a href="{{ url_for('public.location') }}"
+             class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.location' else 'text-stone-200' }}">
+            Location
           </a>
           <a href="{{ url_for('public.visitor_guide') }}"
              class="whitespace-nowrap shrink-0 transition-colors hover:text-amber-300 {{ 'text-amber-300 font-semibold border-b-2 border-amber-400 pb-0.5' if request.endpoint == 'public.visitor_guide' else 'text-stone-200' }}">
@@ -66,20 +80,16 @@
               <span>Staff Login</span>
             </a>
           {% endif %}
-        </nav>
-
-        <!-- Mobile Menu Button -->
-        <button id="mobile-menu-btn" class="md:hidden p-2 text-stone-300 hover:text-white hover:bg-[#185a45] rounded transition-colors" aria-label="Toggle navigation">
-          {{ icons.icon('menu', 'w-6 h-6') }}
-        </button>
-      </div>
+      </nav>
 
       <!-- Mobile Menu -->
       <div id="mobile-menu" class="hidden md:hidden py-4 border-t border-[#1b4d3c] space-y-2">
         <a href="{{ url_for('public.index') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Home</a>
         <a href="{{ url_for('public.collection') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Collection</a>
         <a href="{{ url_for('public.general_tinio') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">General Tinio Legacy</a>
+        <a href="{{ url_for('public.school_history') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">School History</a>
         <a href="{{ url_for('public.principals') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Principals</a>
+        <a href="{{ url_for('public.location') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Location</a>
         <a href="{{ url_for('public.visitor_guide') }}" class="block px-3 py-2 text-sm font-medium text-stone-200 hover:bg-[#185a45] rounded">Visitor Guide</a>
         {% if current_user.is_authenticated %}
           <a href="{{ url_for('admin.dashboard') }}" class="block px-3 py-2 text-sm font-medium text-amber-300 hover:bg-[#185a45] rounded">Staff Console</a>
@@ -153,6 +163,8 @@
             <a href="{{ url_for('public.collection') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">Collection</a>
             <a href="{{ url_for('public.categories') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">Categories</a>
             <a href="{{ url_for('public.general_tinio') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">General Tinio Legacy</a>
+            <a href="{{ url_for('public.school_history') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">School History</a>
+            <a href="{{ url_for('public.location') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">Location</a>
             <a href="{{ url_for('public.visitor_guide') }}" class="block text-sm text-stone-400 hover:text-amber-300 transition-colors">Visitor Guide</a>
           </div>
         </div>
